@@ -231,28 +231,30 @@ export default function GuestPage() {
 
       <div className="section-title">Por Categoría</div>
 
-      <div
-        className={`cat-select${dropdownOpen ? ' open' : ''}`}
-        onClick={() => setDropdownOpen(o => !o)}
-      >
-        <span className="label">{selectedCat}</span>
-        <span className="chevron">▾</span>
-      </div>
-      <div className={`cat-menu${dropdownOpen ? ' open' : ''}`}>
-        <div className="cat-menu-inner">
-          {categories.map(cat => (
-            <div
-              key={cat}
-              className="cat-option"
-              onClick={e => {
-                e.stopPropagation()
-                setSelectedCat(cat)
-                setDropdownOpen(false)
-              }}
-            >
-              {cat}
-            </div>
-          ))}
+      <div className="cat-select-wrap">
+        <div
+          className={`cat-select${dropdownOpen ? ' open' : ''}`}
+          onClick={() => setDropdownOpen(o => !o)}
+        >
+          <span className="label">{selectedCat}</span>
+          <span className="chevron">▾</span>
+        </div>
+        <div className={`cat-menu${dropdownOpen ? ' open' : ''}`}>
+          <div className="cat-menu-inner">
+            {categories.map(cat => (
+              <div
+                key={cat}
+                className="cat-option"
+                onClick={e => {
+                  e.stopPropagation()
+                  setSelectedCat(cat)
+                  setDropdownOpen(false)
+                }}
+              >
+                {cat}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
