@@ -1,5 +1,12 @@
-/* ---- page wrapper ---- */
-.page { max-width: 520px; margin: 0 auto; padding-bottom: 80px; }
+/* ---- layout ---- */
+.app-layout {
+  min-height: 100dvh;
+  display: flex; flex-direction: column;
+}
+.page {
+  max-width: 520px; width: 100%; margin: 0 auto;
+  flex: 1;
+}
 
 /* ---- header ---- */
 header {
@@ -173,17 +180,31 @@ header {
 
 /* ---- footer ---- */
 footer {
-  position: fixed; bottom: 0; left: 0; right: 0;
+  margin-top: 30px;
   border-top: 1px solid var(--red-dim);
   background: var(--black-2);
   text-align: center;
-  padding: 16px 24px;
-  z-index: 10;
+  padding: 10px 24px 16px;
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
 }
-footer p {
-  font-family: var(--font-mono); font-size: 11px;
-  letter-spacing: 0.12em; color: var(--gold-dim); text-transform: uppercase; margin: 0;
+.footer-copy {
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.1em; color: var(--gold-dim); text-transform: uppercase; margin: 0;
 }
+.footer-brand {
+  display: flex; align-items: center; gap: 10px;
+}
+.footer-logo {
+  width: 18px; height: auto; opacity: 0.55;
+}
+.footer-link {
+  display: flex; align-items: center; gap: 5px;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em;
+  color: var(--gold-dim); text-decoration: none;
+  transition: color .2s;
+}
+.footer-link:hover { color: var(--gold); }
+.footer-ig-icon { width: 13px; height: 13px; flex-shrink: 0; }
 
 /* ---- clickable rows ---- */
 .row.clickable { cursor: pointer; }
