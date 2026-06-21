@@ -4,6 +4,9 @@ import './GuestPage.css'
 
 const fmt = (n) => '$' + Number(n).toLocaleString('en-US')
 
+const initials = (name) =>
+  name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)
+
 const BallLines = () => (
   <svg viewBox="0 0 34 34" aria-hidden="true">
     <path d="M2,12 Q17,1 32,12" fill="none" stroke="white" strokeWidth="1.6" strokeOpacity="0.85" />
@@ -11,9 +14,12 @@ const BallLines = () => (
   </svg>
 )
 
-function PairRow({ rank, pareja, categoria, grupo, amount, leader }) {
+function PairRow({ rank, pareja, categoria, grupo, amount, leader, onClick }) {
   return (
-    <div className={`row${leader ? ' leader' : ''}`}>
+    <div
+      className={`row${leader ? ' leader' : ''}${onClick ? ' clickable' : ''}`}
+      onClick={onClick}
+    >
       <div className="rank-ball">
         <BallLines />
         <span className="num">{rank}</span>
@@ -27,12 +33,49 @@ function PairRow({ rank, pareja, categoria, grupo, amount, leader }) {
   )
 }
 
-function SearchOverlay({ onClose, sortedAll }) {
+function PairModal({ pair, onClose }) {
+  const [p1, p2] = pair.players
+  const [ph1, ph2] = pair.photos
+
+  return (
+    <div className="pair-modal-overlay" onClick={onClose}>
+      <div className="pair-modal" onClick={e => e.stopPropagation()}>
+        <button className="pair-modal-close" onClick={onClose} aria-label="Cerrar">✕</button>
+        <h2 className="pair-modal-title">{pair.categoria} — {pair.grupo}</h2>
+        <div className="pair-modal-players">
+          <div className="pair-modal-player">
+            <div className="pair-modal-name">{p1}</div>
+            {ph1
+              ? <img className="pair-photo" src={ph1} alt={p1} />
+              : <div className="pair-photo-placeholder">{initials(p1)}</div>
+            }
+          </div>
+          <div className="pair-modal-player">
+            <div className="pair-modal-name">{p2}</div>
+            {ph2
+              ? <img className="pair-photo" src={ph2} alt={p2} />
+              : <div className="pair-photo-placeholder">{initials(p2)}</div>
+            }
+          </div>
+        </div>
+        <div className="pair-amount-pill">
+          <svg viewBox="0 0 300 64" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,18 Q150,2 300,18" fill="none" stroke="white" strokeWidth="2.5" strokeOpacity="0.7" />
+            <path d="M0,46 Q150,62 300,46" fill="none" stroke="white" strokeWidth="2.5" strokeOpacity="0.7" />
+          </svg>
+          <span className="pill-text">{fmt(pair.amount)}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function SearchOverlay({ onClose, sortedAll, onSelectPair }) {
   const [query, setQuery] = useState('')
 
   const q = query.toLowerCase()
   const results = query.trim()
-    ? sortedAll.filter(p => p.pareja.toLowerCase().includes(q))
+    ? sortedAll.filter(p => p.players.some(name => name.toLowerCase().includes(q)))
     : []
 
   return (
@@ -67,6 +110,7 @@ function SearchOverlay({ onClose, sortedAll }) {
                   grupo={p.grupo}
                   amount={p.amount}
                   leader={false}
+                  onClick={() => onSelectPair(p)}
                 />
               ))}
             </div>
@@ -81,17 +125,23 @@ export default function GuestPage() {
   const [selectedCat, setSelectedCat] = useState(categories[0])
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const [modalPair, setModalPair] = useState(null)
 
   const sortedAll = [...pairs].sort((a, b) => b.amount - a.amount)
-
   const topFive = sortedAll.slice(0, 5)
-
   const totalPool = pairs.reduce((s, p) => s + p.amount, 0)
   const maxWin = sortedAll[0]?.amount ?? 0
-
   const catPairs = pairs
     .filter(p => p.categoria === selectedCat)
     .sort((a, b) => b.amount - a.amount)
+
+  const openModal = (pair) => setModalPair(pair)
+  const closeModal = () => setModalPair(null)
+
+  const handleSelectFromSearch = (pair) => {
+    setSearchOpen(false)
+    setModalPair(pair)
+  }
 
   return (
     <div className="page">
@@ -134,6 +184,7 @@ export default function GuestPage() {
             grupo={p.grupo}
             amount={p.amount}
             leader={i === 0}
+            onClick={() => openModal(p)}
           />
         ))}
       </div>
@@ -174,6 +225,7 @@ export default function GuestPage() {
             grupo={p.grupo}
             amount={p.amount}
             leader={i === 0}
+            onClick={() => openModal(p)}
           />
         ))}
       </div>
@@ -190,7 +242,12 @@ export default function GuestPage() {
         <SearchOverlay
           sortedAll={sortedAll}
           onClose={() => setSearchOpen(false)}
+          onSelectPair={handleSelectFromSearch}
         />
+      )}
+
+      {modalPair && (
+        <PairModal pair={modalPair} onClose={closeModal} />
       )}
     </div>
   )

@@ -185,6 +185,82 @@ footer p {
   letter-spacing: 0.12em; color: var(--gold-dim); text-transform: uppercase; margin: 0;
 }
 
+/* ---- clickable rows ---- */
+.row.clickable { cursor: pointer; }
+
+/* ---- pair detail modal ---- */
+.pair-modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(11,7,16,0.82);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px 16px;
+}
+.pair-modal {
+  position: relative;
+  background: var(--black-2);
+  border: 1px solid var(--red);
+  border-radius: 20px;
+  padding: 28px 22px 24px;
+  width: 100%; max-width: 460px;
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+.pair-modal-close {
+  position: absolute; top: 14px; right: 16px;
+  background: none; border: none; color: var(--cream);
+  font-size: 18px; cursor: pointer; opacity: 0.6; line-height: 1;
+  transition: opacity .2s;
+}
+.pair-modal-close:hover { opacity: 1; }
+.pair-modal-title {
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 400; line-height: 1.1;
+  text-transform: uppercase; letter-spacing: 0.01em;
+  color: var(--gold);
+  text-align: center; margin: 0;
+}
+.pair-modal-players {
+  display: flex; gap: 16px; width: 100%;
+}
+.pair-modal-player {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.pair-modal-name {
+  font-family: var(--font-body); font-weight: 700; font-size: 17px;
+  color: var(--gold); text-align: center; line-height: 1.2;
+}
+.pair-photo {
+  width: 100%; aspect-ratio: 3/4;
+  object-fit: cover; border-radius: 12px;
+  border: 1px solid var(--red-dim);
+}
+.pair-photo-placeholder {
+  width: 100%; aspect-ratio: 3/4;
+  background: var(--black-3);
+  border: 1px solid var(--red-dim);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 40px; color: var(--gold-dim);
+}
+.pair-amount-pill {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 80%;
+  background: radial-gradient(circle at 40% 35%, #e8ffb0, var(--ball) 55%, var(--ball-dark) 100%);
+  border-radius: 999px;
+  padding: 14px 0;
+  box-shadow: 0 0 22px rgba(212,242,43,0.45);
+  overflow: hidden;
+}
+.pair-amount-pill svg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+}
+.pair-amount-pill .pill-text {
+  position: relative; z-index: 2;
+  font-family: var(--font-mono); font-weight: 700; font-size: 26px;
+  color: #1f3b14;
+}
+
 /* ---- search overlay ---- */
 .search-overlay {
   position: fixed; inset: 0; z-index: 100;
