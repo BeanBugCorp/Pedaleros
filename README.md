@@ -57,7 +57,11 @@ DevTools, under `npm run dev`, will show the following general issues:
 - Improvements: Under the improvements tab/space, it will surely show that CSP is blocking execution of scripts or styles. If these are from React or Vite execution files, ignore.
 
 ### 2. Prduction Build - To validate production ready code
-Because `npm run dev` does not show "the complete picture", we need a way to preview how our webpage will look when it's deployed. Running `npm run build && npm run preview`, will do the following:
+Because `npm run dev` does not show "the complete picture", we need a way to preview how our webpage will look when it's deployed. Running 
+```
+npm run build && npm run preview
+```
+will do the following:
 
 - React + Vite will no longer use inline scripts/styles, as they will compile the project. 
 - The project will use the security headers under `securityHeadersProduction` in file `vite.config.js`. These are the same security headers under `vercel.json`, they are strict and are not in report mode.
