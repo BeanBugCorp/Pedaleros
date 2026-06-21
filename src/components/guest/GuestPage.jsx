@@ -33,13 +33,16 @@ function PairRow({ rank, pareja, categoria, grupo, amount, leader, onClick }) {
   )
 }
 
-function PairModal({ pair, onClose }) {
+function PairModal({ pair, onClose, onBack }) {
   const [p1, p2] = pair.players
   const [ph1, ph2] = pair.photos
 
   return (
     <div className="pair-modal-overlay" onClick={onClose}>
       <div className="pair-modal" onClick={e => e.stopPropagation()}>
+        {onBack && (
+          <button className="pair-modal-back" onClick={onBack} aria-label="Volver">← Volver</button>
+        )}
         <button className="pair-modal-close" onClick={onClose} aria-label="Cerrar">✕</button>
         <h2 className="pair-modal-title">{pair.categoria} — {pair.grupo}</h2>
         <div className="pair-modal-players">
@@ -64,6 +67,40 @@ function PairModal({ pair, onClose }) {
             <path d="M0,46 Q150,62 300,46" fill="none" stroke="white" strokeWidth="2.5" strokeOpacity="0.7" />
           </svg>
           <span className="pill-text">{fmt(pair.amount)}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function CategoryModal({ categoria, catPairs, onClose, onSelectPair }) {
+  const categoryPool = catPairs.reduce((s, p) => s + p.amount, 0)
+
+  return (
+    <div className="cat-modal-overlay" onClick={onClose}>
+      <div className="cat-modal" onClick={e => e.stopPropagation()}>
+        <div className="cat-modal-header">
+          <h2 className="cat-modal-title">{categoria}</h2>
+          <button className="cat-modal-close" onClick={onClose} aria-label="Cerrar">✕</button>
+        </div>
+        <div className="cat-modal-list">
+          <div className="rows">
+            {catPairs.map((p, i) => (
+              <PairRow
+                key={p.id}
+                rank={i + 1}
+                pareja={p.pareja}
+                grupo={p.grupo}
+                amount={p.amount}
+                leader={i === 0}
+                onClick={() => onSelectPair(p)}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="cat-modal-footer">
+          <div className="cat-modal-footer-label">Pozo de categoría</div>
+          <div className="cat-modal-footer-amount">{fmt(categoryPool)}</div>
         </div>
       </div>
     </div>
@@ -125,7 +162,9 @@ export default function GuestPage() {
   const [selectedCat, setSelectedCat] = useState(categories[0])
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const [catModalOpen, setCatModalOpen] = useState(false)
   const [modalPair, setModalPair] = useState(null)
+  const [modalOnBack, setModalOnBack] = useState(null)
 
   const sortedAll = [...pairs].sort((a, b) => b.amount - a.amount)
   const topFive = sortedAll.slice(0, 5)
@@ -135,8 +174,8 @@ export default function GuestPage() {
     .filter(p => p.categoria === selectedCat)
     .sort((a, b) => b.amount - a.amount)
 
-  const openModal = (pair) => setModalPair(pair)
-  const closeModal = () => setModalPair(null)
+  const openModal = (pair) => { setModalPair(pair); setModalOnBack(null) }
+  const closeModal = () => { setModalPair(null); setModalOnBack(null) }
 
   const handleSelectFromSearch = (pair) => {
     setSearchOpen(false)
@@ -231,7 +270,7 @@ export default function GuestPage() {
       </div>
 
       <div className="ver-todas-wrap">
-        <button className="ver-todas">Ver todas →</button>
+        <button className="ver-todas" onClick={() => setCatModalOpen(true)}>Ver todas →</button>
       </div>
 
       <footer>
@@ -246,8 +285,25 @@ export default function GuestPage() {
         />
       )}
 
+      {catModalOpen && (
+        <CategoryModal
+          categoria={selectedCat}
+          catPairs={catPairs}
+          onClose={() => setCatModalOpen(false)}
+          onSelectPair={p => {
+            setCatModalOpen(false)
+            setModalPair(p)
+            setModalOnBack(() => () => { setModalPair(null); setCatModalOpen(true) })
+          }}
+        />
+      )}
+
       {modalPair && (
-        <PairModal pair={modalPair} onClose={closeModal} />
+        <PairModal
+          pair={modalPair}
+          onClose={closeModal}
+          onBack={modalOnBack}
+        />
       )}
     </div>
   )
