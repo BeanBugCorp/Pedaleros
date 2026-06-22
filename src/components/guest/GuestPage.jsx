@@ -6,12 +6,29 @@ import './GuestPage.css'
 const fmt = (n) => '$' + Number(n).toLocaleString('en-US')
 
 const initials = (name) =>
-  name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)
+  name
+    .split(' ')
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2)
 
 const BallLines = () => (
   <svg viewBox="0 0 34 34" aria-hidden="true">
-    <path d="M2,12 Q17,1 32,12" fill="none" stroke="white" strokeWidth="1.6" strokeOpacity="0.85" />
-    <path d="M2,22 Q17,33 32,22" fill="none" stroke="white" strokeWidth="1.6" strokeOpacity="0.85" />
+    <path
+      d="M2,12 Q17,1 32,12"
+      fill="none"
+      stroke="white"
+      strokeWidth="1.6"
+      strokeOpacity="0.85"
+    />
+    <path
+      d="M2,22 Q17,33 32,22"
+      fill="none"
+      stroke="white"
+      strokeWidth="1.6"
+      strokeOpacity="0.85"
+    />
   </svg>
 )
 
@@ -29,7 +46,9 @@ function PairRow({ rank, pareja, categoria, grupo, amount, leader, onClick, glow
       </div>
       <div className="row-main">
         <div className="pareja">{pareja}</div>
-        <div className="grupo">{categoria ? `${categoria} · ${grupo}` : grupo}</div>
+        <div className="grupo">
+          {categoria ? `${categoria} · ${grupo}` : grupo}
+        </div>
       </div>
       <div className="amount">{fmt(amount)}</div>
     </div>
@@ -42,32 +61,64 @@ function PairModal({ pair, onClose, onBack }) {
 
   return (
     <div className="pair-modal-overlay" onClick={onClose}>
-      <div className="pair-modal" onClick={e => e.stopPropagation()}>
+      <div className="pair-modal" onClick={(e) => e.stopPropagation()}>
         {onBack && (
-          <button className="pair-modal-back" onClick={onBack} aria-label="Volver">← Volver</button>
+          <button
+            className="pair-modal-back"
+            onClick={onBack}
+            aria-label="Volver"
+          >
+            ← Volver
+          </button>
         )}
-        <button className="pair-modal-close" onClick={onClose} aria-label="Cerrar">✕</button>
-        <h2 className="pair-modal-title">{pair.categoria} — {pair.grupo}</h2>
+        <button
+          className="pair-modal-close"
+          onClick={onClose}
+          aria-label="Cerrar"
+        >
+          ✕
+        </button>
+        <h2 className="pair-modal-title">
+          {pair.categoria} — {pair.grupo}
+        </h2>
         <div className="pair-modal-players">
           <div className="pair-modal-player">
             <div className="pair-modal-name">{p1}</div>
-            {ph1
-              ? <img className="pair-photo" src={ph1} alt={p1} />
-              : <div className="pair-photo-placeholder">{initials(p1)}</div>
-            }
+            {ph1 ? (
+              <img className="pair-photo" src={ph1} alt={p1} />
+            ) : (
+              <div className="pair-photo-placeholder">{initials(p1)}</div>
+            )}
           </div>
           <div className="pair-modal-player">
             <div className="pair-modal-name">{p2}</div>
-            {ph2
-              ? <img className="pair-photo" src={ph2} alt={p2} />
-              : <div className="pair-photo-placeholder">{initials(p2)}</div>
-            }
+            {ph2 ? (
+              <img className="pair-photo" src={ph2} alt={p2} />
+            ) : (
+              <div className="pair-photo-placeholder">{initials(p2)}</div>
+            )}
           </div>
         </div>
         <div className="pair-amount-pill">
-          <svg viewBox="0 0 300 64" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M0,18 Q150,2 300,18" fill="none" stroke="white" strokeWidth="2.5" strokeOpacity="0.7" />
-            <path d="M0,46 Q150,62 300,46" fill="none" stroke="white" strokeWidth="2.5" strokeOpacity="0.7" />
+          <svg
+            viewBox="0 0 300 64"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M0,18 Q150,2 300,18"
+              fill="none"
+              stroke="white"
+              strokeWidth="2.5"
+              strokeOpacity="0.7"
+            />
+            <path
+              d="M0,46 Q150,62 300,46"
+              fill="none"
+              stroke="white"
+              strokeWidth="2.5"
+              strokeOpacity="0.7"
+            />
           </svg>
           <span className="pill-text">{fmt(pair.amount)}</span>
         </div>
@@ -81,10 +132,16 @@ function CategoryModal({ categoria, catPairs, onClose, onSelectPair }) {
 
   return (
     <div className="cat-modal-overlay" onClick={onClose}>
-      <div className="cat-modal" onClick={e => e.stopPropagation()}>
+      <div className="cat-modal" onClick={(e) => e.stopPropagation()}>
         <div className="cat-modal-header">
           <h2 className="cat-modal-title">{categoria}</h2>
-          <button className="cat-modal-close" onClick={onClose} aria-label="Cerrar">✕</button>
+          <button
+            className="cat-modal-close"
+            onClick={onClose}
+            aria-label="Cerrar"
+          >
+            ✕
+          </button>
         </div>
         <div className="cat-modal-list">
           <div className="rows">
@@ -115,12 +172,14 @@ function SearchOverlay({ onClose, sortedAll, onSelectPair }) {
 
   const q = query.toLowerCase()
   const results = query.trim()
-    ? sortedAll.filter(p => p.players.some(name => name.toLowerCase().includes(q)))
+    ? sortedAll.filter((p) =>
+        p.players.some((name) => name.toLowerCase().includes(q)),
+      )
     : []
 
   return (
     <div className="search-overlay" onClick={onClose}>
-      <div className="search-modal" onClick={e => e.stopPropagation()}>
+      <div className="search-modal" onClick={(e) => e.stopPropagation()}>
         <div className="search-header">
           <input
             autoFocus
@@ -128,9 +187,15 @@ function SearchOverlay({ onClose, sortedAll, onSelectPair }) {
             className="search-input"
             placeholder="Buscar pareja…"
             value={query}
-            onChange={e => setQuery(e.target.value)}
+            onChange={(e) => setQuery(e.target.value)}
           />
-          <button className="search-close" onClick={onClose} aria-label="Cerrar">✕</button>
+          <button
+            className="search-close"
+            onClick={onClose}
+            aria-label="Cerrar"
+          >
+            ✕
+          </button>
         </div>
         <div className="search-results">
           {query.trim() === '' && (
@@ -141,10 +206,10 @@ function SearchOverlay({ onClose, sortedAll, onSelectPair }) {
           )}
           {results.length > 0 && (
             <div className="rows">
-              {results.map(p => (
+              {results.map((p) => (
                 <PairRow
                   key={p.id}
-                  rank={sortedAll.findIndex(pp => pp.id === p.id) + 1}
+                  rank={sortedAll.findIndex((pp) => pp.id === p.id) + 1}
                   pareja={p.pareja}
                   categoria={p.categoria}
                   grupo={p.grupo}
@@ -174,11 +239,17 @@ export default function GuestPage() {
   const totalPool = pairs.reduce((s, p) => s + p.amount, 0)
   const maxWin = sortedAll[0]?.amount ?? 0
   const catPairs = pairs
-    .filter(p => p.categoria === selectedCat)
+    .filter((p) => p.categoria === selectedCat)
     .sort((a, b) => b.amount - a.amount)
 
-  const openModal = (pair) => { setModalPair(pair); setModalOnBack(null) }
-  const closeModal = () => { setModalPair(null); setModalOnBack(null) }
+  const openModal = (pair) => {
+    setModalPair(pair)
+    setModalOnBack(null)
+  }
+  const closeModal = () => {
+    setModalPair(null)
+    setModalOnBack(null)
+  }
 
   const handleSelectFromSearch = (pair) => {
     setSearchOpen(false)
@@ -201,22 +272,41 @@ export default function GuestPage() {
             ⌕
           </button>
         </div>
-      </header>
+        </header>
 
-      <div className="tote">
-        <div className="tote-stat">
-          <div className="tote-label">Pozo Total</div>
-          <div className="tote-value">{fmt(totalPool)}</div>
+        <div className="tote">
+          <div className="tote-stat">
+            <div className="tote-label">Pozo Total</div>
+            <div className="tote-value">{fmt(totalPool)}</div>
+          </div>
+          <div className="tote-stat">
+            <div className="tote-label">Max Ganancia</div>
+            <div className="tote-value">{fmt(maxWin)}</div>
+          </div>
+          <div className="tote-stat">
+            <div className="tote-label"># Parejas</div>
+            <div className="tote-value">{pairs.length}</div>
+          </div>
+          <button className="search-btn" onClick={() => setSearchOpen(true)} aria-label="Buscar pareja">
+            ⌕
+          </button>
         </div>
-        <div className="tote-stat">
-          <div className="tote-label">Max Ganancia</div>
-          <div className="tote-value">{fmt(maxWin)}</div>
+
+        <div className="section-title">Top 5 Global</div>
+        <div className="rows">
+          {topFive.map((p, i) => (
+            <PairRow
+              key={p.id}
+              rank={i + 1}
+              pareja={p.pareja}
+              categoria={p.categoria}
+              grupo={p.grupo}
+              amount={p.amount}
+              leader={i === 0}
+              onClick={() => openModal(p)}
+            />
+          ))}
         </div>
-        <div className="tote-stat">
-          <div className="tote-label"># Parejas</div>
-          <div className="tote-value">{pairs.length}</div>
-        </div>
-      </div>
 
       <div className="section-title">Top 5 Global</div>
       <div className="rows">
@@ -235,102 +325,132 @@ export default function GuestPage() {
           />
         ))}
       </div>
+        <div className="section-title">Por Categoría</div>
 
-      <div className="section-title">Por Categoría</div>
-
-      <div className="cat-select-wrap">
-        <div
-          className={`cat-select${dropdownOpen ? ' open' : ''}`}
-          onClick={() => setDropdownOpen(o => !o)}
-        >
-          <span className="label">{selectedCat}</span>
-          <span className="chevron">▾</span>
-        </div>
-        <div className={`cat-menu${dropdownOpen ? ' open' : ''}`}>
-          <div className="cat-menu-inner">
-            {categories.map(cat => (
-              <div
-                key={cat}
-                className="cat-option"
-                onClick={e => {
-                  e.stopPropagation()
-                  setSelectedCat(cat)
-                  setDropdownOpen(false)
-                }}
-              >
-                {cat}
-              </div>
-            ))}
+        <div className="cat-select-wrap">
+          <div
+            className={`cat-select${dropdownOpen ? ' open' : ''}`}
+            onClick={() => setDropdownOpen((o) => !o)}
+          >
+            <span className="label">{selectedCat}</span>
+            <span className="chevron">▾</span>
+          </div>
+          <div className={`cat-menu${dropdownOpen ? ' open' : ''}`}>
+            <div className="cat-menu-inner">
+              {categories.map((cat) => (
+                <div
+                  key={cat}
+                  className="cat-option"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setSelectedCat(cat)
+                    setDropdownOpen(false)
+                  }}
+                >
+                  {cat}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
+
+        <div className="rows" style={{ marginTop: '14px' }}>
+          {catPairs.map((p, i) => (
+            <PairRow
+              key={p.id}
+              rank={i + 1}
+              pareja={p.pareja}
+              grupo={p.grupo}
+              amount={p.amount}
+              leader={i === 0}
+              onClick={() => openModal(p)}
+            />
+          ))}
+        </div>
+
+        <div className="ver-todas-wrap">
+          <button className="ver-todas" onClick={() => setCatModalOpen(true)}>
+            Ver todas →
+          </button>
+        </div>
       </div>
 
-      <div className="rows" style={{ marginTop: '14px' }}>
-        {catPairs.map((p, i) => (
-          <PairRow
-            key={p.id}
-            rank={i + 1}
-            pareja={p.pareja}
-            grupo={p.grupo}
-            amount={p.amount}
-            leader={i === 0}
-            onClick={() => openModal(p)}
-            glowDelay={i < 3 ? i * 1.5 : undefined}
-            glowDuration={i < 3 ? 4.5 : undefined}
+      <footer>
+        <p className="footer-copy">
+          © {tournament.year} Calcuta Floü · Pedaleros
+        </p>
+        <div className="footer-brand">
+          <a
+            className="footer-link"
+            href="https://instagram.com/beanbug.corp"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <svg
+              className="footer-ig-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle
+                cx="17.5"
+                cy="6.5"
+                r="0.8"
+                fill="currentColor"
+                stroke="none"
+              />
+            </svg>
+            beanbug.corp
+          </a>
+          <img
+            className="footer-logo"
+            src="/beanbug-logo.png"
+            alt="BeanBug Corp"
           />
-        ))}
-      </div>
+          <a
+            className="footer-link"
+            href="https://beanbugcorp.com"
+            target="_blank"
+            rel="noreferrer"
+          >
+            beanbugcorp.com
+          </a>
+        </div>
+      </footer>
 
-      <div className="ver-todas-wrap">
-        <button className="ver-todas" onClick={() => setCatModalOpen(true)}>Ver todas →</button>
-      </div>
+      {searchOpen && (
+        <SearchOverlay
+          sortedAll={sortedAll}
+          onClose={() => setSearchOpen(false)}
+          onSelectPair={handleSelectFromSearch}
+        />
+      )}
 
-    </div>
+      {catModalOpen && (
+        <CategoryModal
+          categoria={selectedCat}
+          catPairs={catPairs}
+          onClose={() => setCatModalOpen(false)}
+          onSelectPair={(p) => {
+            setCatModalOpen(false)
+            setModalPair(p)
+            setModalOnBack(() => () => {
+              setModalPair(null)
+              setCatModalOpen(true)
+            })
+          }}
+        />
+      )}
 
-    <footer>
-      <p className="footer-copy">© {tournament.year} Calcuta Floü · Pedaleros</p>
-      <div className="footer-brand">
-        <a className="footer-link" href="https://instagram.com/beanbug.corp" target="_blank" rel="noreferrer">
-          <svg className="footer-ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-            <circle cx="12" cy="12" r="4"/>
-            <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
-          </svg>
-          beanbug.corp
-        </a>
-        <img className="footer-logo" src="/beanbug-logo.png" alt="BeanBug Corp" />
-        <a className="footer-link" href="https://beanbugcorp.com" target="_blank" rel="noreferrer">beanbugcorp.com</a>
-      </div>
-    </footer>
-
-    {searchOpen && (
-      <SearchOverlay
-        sortedAll={sortedAll}
-        onClose={() => setSearchOpen(false)}
-        onSelectPair={handleSelectFromSearch}
-      />
-    )}
-
-    {catModalOpen && (
-      <CategoryModal
-        categoria={selectedCat}
-        catPairs={catPairs}
-        onClose={() => setCatModalOpen(false)}
-        onSelectPair={p => {
-          setCatModalOpen(false)
-          setModalPair(p)
-          setModalOnBack(() => () => { setModalPair(null); setCatModalOpen(true) })
-        }}
-      />
-    )}
-
-    {modalPair && (
-      <PairModal
-        pair={modalPair}
-        onClose={closeModal}
-        onBack={modalOnBack}
-      />
-    )}
+      {modalPair && (
+        <PairModal pair={modalPair} onClose={closeModal} onBack={modalOnBack} />
+      )}
     </div>
   )
 }

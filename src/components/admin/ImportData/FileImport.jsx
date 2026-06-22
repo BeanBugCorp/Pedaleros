@@ -3,8 +3,7 @@ import './FileImport.css'
 
 const ACCEPTED = {
   '.xml': 'application/xml',
-  '.xlsx':
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 }
 
 const ACCEPT_ATTR = '.xml,.xlsx'

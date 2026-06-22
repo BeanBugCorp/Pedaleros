@@ -9,7 +9,9 @@
   text-align: center;
   cursor: pointer;
   color: #ffffff;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
 }
 
 .file-import__dropzone:hover,

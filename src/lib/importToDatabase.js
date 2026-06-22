@@ -116,7 +116,9 @@ function describePairProblem(pair, categoryId) {
   }
   if (!pair.player1) missing.push('player1')
   if (!pair.player2) missing.push('player2')
-  return missing.length ? `missing required field(s): ${missing.join(', ')}` : null
+  return missing.length
+    ? `missing required field(s): ${missing.join(', ')}`
+    : null
 }
 
 // Inserts valid pair rows. Tries a single batch insert first; if that fails,
