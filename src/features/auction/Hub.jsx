@@ -130,7 +130,7 @@ export default function Hub({ data, onStartGroup, onStartCategory, onEdit }) {
                 <button className={styles.subastar} onClick={() => startCategory(cat)}>
                   SUBASTAR
                 </button>
-                <button className={styles.editar} onClick={() => onEdit?.(cat.name)}>
+                <button className={styles.editar} onClick={() => onEdit?.(cat)}>
                   EDITAR
                 </button>
               </div>

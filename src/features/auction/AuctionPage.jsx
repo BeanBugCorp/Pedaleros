@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Hub from './Hub';
 import LiveAuction from './LiveAuction';
+import Edit from './Edit';
 import { tournament, thresholds } from './content';
 import './auction.global.css'; // keyframes imported once for the whole auction feature
 
@@ -25,10 +26,15 @@ export default function AuctionPage() {
           onStartCategory={(category, pairs) =>
             setView({ screen: 'live', category, group: '', pairs })
           }
-          onEdit={(category) => {
-            // Build the Edit screen from the README spec, or route to it here.
-            console.log('EDITAR', category);
-          }}
+          onEdit={(category) => setView({ screen: 'edit', category })}
+        />
+      )}
+
+      {view.screen === 'edit' && (
+        <Edit
+          category={view.category}
+          onBack={() => setView({ screen: 'hub' })}
+          onChange={() => {/* persist if/when you have a backend */}}
         />
       )}
 
