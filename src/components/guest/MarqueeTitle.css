@@ -1,0 +1,95 @@
+.mq-root {
+  --bulb: 7px;
+  --bgap: 3px;
+  --cgap: 9px;
+  --rowgap: 9px;
+  --on: var(--gold, #FFc94A);
+  --glow: rgba(255, 201, 74, 0.90);
+  --glow2: rgba(255, 201, 74, 0.45);
+  --socket: #2a141d;
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--rowgap);
+  line-height: 0;
+  user-select: none;
+}
+
+.mq-line {
+  display: flex;
+  gap: var(--cgap);
+  justify-content: center;
+}
+
+.mq-char {
+  display: grid;
+  grid-template-columns: repeat(5, var(--bulb));
+  grid-auto-rows: var(--bulb);
+  gap: var(--bgap);
+}
+
+.mq-bulb {
+  width: var(--bulb);
+  height: var(--bulb);
+  border-radius: 50%;
+}
+
+.mq-bulb.off {
+  background: radial-gradient(circle at 50% 45%, var(--socket), #150b11 90%);
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.7);
+}
+
+.mq-bulb.on {
+  background: radial-gradient(circle at 38% 32%, #fff7df 0%, var(--on) 55%, #b9851c 100%);
+  box-shadow: 0 0 6px var(--glow), 0 0 15px var(--glow2);
+  animation: mq-twinkle 4s ease-in-out infinite;
+  will-change: filter, opacity;
+}
+
+/* Twinkle never falls below a readable floor (brightness .72 / opacity .82). */
+@keyframes mq-twinkle {
+  0%, 100% { filter: brightness(1.08) saturate(1.05); opacity: 1; }
+  50%       { filter: brightness(0.72) saturate(0.95); opacity: 0.82; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mq-bulb.on { animation: none; }
+}
+
+/* ---- variant: duo (gold core + red halo) ---- */
+.v-duo {
+  --bulb: 8px;
+  --cgap: 10px;
+  --socket: #3a0f18;
+}
+
+.v-duo .mq-bulb.on {
+  box-shadow: 0 0 6px rgba(255, 201, 74, 0.95), 0 0 17px rgba(232, 25, 44, 0.55);
+}
+
+/* ---- variant: ember (small dense LEDs, big bloom) ---- */
+.v-ember {
+  --bulb: 6px;
+  --bgap: 2px;
+  --cgap: 7px;
+  --rowgap: 7px;
+}
+
+.v-ember .mq-bulb.off {
+  background: transparent;
+  box-shadow: none;
+}
+
+.v-ember .mq-bulb.on {
+  border-radius: 32%;
+  background: radial-gradient(circle at 40% 35%, #fffdf2 0%, var(--on) 60%, #b9851c 100%);
+  box-shadow:
+    0 0 5px rgba(255, 201, 74, 1),
+    0 0 12px rgba(255, 201, 74, 0.6),
+    0 0 24px rgba(255, 201, 74, 0.3);
+  animation-name: mq-twinkle-ember;
+}
+
+@keyframes mq-twinkle-ember {
+  0%, 100% { filter: brightness(1.12); opacity: 1; }
+  50%       { filter: brightness(0.8); opacity: 0.9; }
+}
