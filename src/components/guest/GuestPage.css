@@ -16,6 +16,13 @@ header {
 .header-marquee {
   width: 100%; display: flex; justify-content: center; overflow: hidden;
 }
+.header-marquee .mq-root {
+  /* (100vw - 56px) / 84 keeps the 11-char longest line inside the padded header on every screen size */
+  --bulb: clamp(2.5px, calc((100vw - 56px) / 84), 5.5px);
+  --bgap: calc(var(--bulb) * 0.375);
+  --cgap: calc(var(--bulb) * 1.25);
+  --rowgap: calc(var(--bulb) * 1.125);
+}
 .header-bottom {
   width: 100%; display: flex; justify-content: space-between; align-items: center;
 }
