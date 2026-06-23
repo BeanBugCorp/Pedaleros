@@ -10,17 +10,14 @@
 
 /* ---- header ---- */
 header {
-  display: flex; justify-content: space-between; align-items: flex-start;
+  display: flex; flex-direction: column; align-items: center;
   padding: 26px 24px 6px; gap: 14px;
 }
-.header-text { min-width: 0; }
-.torneo-name {
-  font-family: var(--font-display);
-  font-size: 32px; line-height: 1.05;
-  text-transform: uppercase; letter-spacing: 0.01em;
-  color: var(--cream);
-  text-shadow: 0 0 6px rgba(255,201,74,0.5), 0 0 18px rgba(232,25,44,0.25);
-  margin: 0 0 8px;
+.header-marquee {
+  width: 100%; display: flex; justify-content: center; overflow: hidden;
+}
+.header-bottom {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
 }
 .header-meta {
   display: flex; flex-wrap: wrap; gap: 14px;
@@ -217,6 +214,42 @@ footer {
 
 /* ---- clickable rows ---- */
 .row.clickable { cursor: pointer; }
+
+/* ---- lightbulb glow animations ---- */
+@keyframes bulb-glow {
+  0%, 21%, 100% {
+    box-shadow: none;
+    border-color: var(--red-dim);
+  }
+  10% {
+    box-shadow: 0 0 28px rgba(255,201,74,0.8), 0 0 60px rgba(255,201,74,0.35);
+    border-color: var(--gold);
+  }
+}
+
+@keyframes bulb-glow-leader {
+  0%, 21%, 100% {
+    box-shadow: 0 0 16px rgba(255,201,74,0.18);
+    border-color: var(--gold);
+  }
+  10% {
+    box-shadow: 0 0 36px rgba(255,201,74,0.95), 0 0 72px rgba(255,201,74,0.5);
+    border-color: var(--gold);
+  }
+}
+
+.row.glowing {
+  animation-name: bulb-glow;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+  animation-delay: var(--glow-delay, 0s);
+  animation-duration: var(--glow-duration, 7.5s);
+}
+
+.row.leader.glowing {
+  animation-name: bulb-glow-leader;
+}
 
 /* ---- pair detail modal ---- */
 .pair-modal-overlay {

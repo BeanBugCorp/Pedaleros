@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { tournament, categories, pairs } from '../../data/content'
+import MarqueeTitle from './MarqueeTitle'
 import './GuestPage.css'
 
 const fmt = (n) => '$' + Number(n).toLocaleString('en-US')
@@ -14,10 +15,12 @@ const BallLines = () => (
   </svg>
 )
 
-function PairRow({ rank, pareja, categoria, grupo, amount, leader, onClick }) {
+function PairRow({ rank, pareja, categoria, grupo, amount, leader, onClick, glowDelay, glowDuration }) {
+  const glowing = glowDelay !== undefined && glowDuration !== undefined
   return (
     <div
-      className={`row${leader ? ' leader' : ''}${onClick ? ' clickable' : ''}`}
+      className={`row${leader ? ' leader' : ''}${onClick ? ' clickable' : ''}${glowing ? ' glowing' : ''}`}
+      style={glowing ? { '--glow-delay': `${glowDelay}s`, '--glow-duration': `${glowDuration}s` } : undefined}
       onClick={onClick}
     >
       <div className="rank-ball">
@@ -186,16 +189,18 @@ export default function GuestPage() {
     <div className="app-layout">
     <div className="page">
       <header>
-        <div className="header-text">
-          <h1 className="torneo-name">{tournament.name}</h1>
+        <div className="header-marquee">
+          <MarqueeTitle text="Torneo 2do|Aniversario" variant="duo" scale={0.65} />
+        </div>
+        <div className="header-bottom">
           <div className="header-meta">
             <span>{tournament.club}</span>
             <span className="dates">{tournament.dates}</span>
           </div>
+          <button className="search-btn" onClick={() => setSearchOpen(true)} aria-label="Buscar pareja">
+            ⌕
+          </button>
         </div>
-        <button className="search-btn" onClick={() => setSearchOpen(true)} aria-label="Buscar pareja">
-          ⌕
-        </button>
       </header>
 
       <div className="tote">
@@ -225,6 +230,8 @@ export default function GuestPage() {
             amount={p.amount}
             leader={i === 0}
             onClick={() => openModal(p)}
+            glowDelay={i * 1.5}
+            glowDuration={7.5}
           />
         ))}
       </div>
@@ -268,6 +275,8 @@ export default function GuestPage() {
             amount={p.amount}
             leader={i === 0}
             onClick={() => openModal(p)}
+            glowDelay={i < 3 ? i * 1.5 : undefined}
+            glowDuration={i < 3 ? 4.5 : undefined}
           />
         ))}
       </div>
