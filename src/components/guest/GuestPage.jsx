@@ -190,7 +190,7 @@ export default function GuestPage() {
     <div className="page">
       <header>
         <div className="header-marquee">
-          <MarqueeTitle text="Torneo 2do|Aniversario" variant="duo" scale={0.65} />
+          <MarqueeTitle text="Torneo 2do|Aniversario" variant="duo" />
         </div>
         <div className="header-bottom">
           <div className="header-meta">
