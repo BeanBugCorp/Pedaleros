@@ -3,8 +3,8 @@
   --bgap: 3px;
   --cgap: 9px;
   --rowgap: 9px;
-  --on: var(--gold, #FFc94A);
-  --glow: rgba(255, 201, 74, 0.90);
+  --on: var(--gold, #ffc94a);
+  --glow: rgba(255, 201, 74, 0.9);
   --glow2: rgba(255, 201, 74, 0.45);
   --socket: #2a141d;
   display: inline-flex;
@@ -39,20 +39,36 @@
 }
 
 .mq-bulb.on {
-  background: radial-gradient(circle at 38% 32%, #fff7df 0%, var(--on) 55%, #b9851c 100%);
-  box-shadow: 0 0 6px var(--glow), 0 0 15px var(--glow2);
+  background: radial-gradient(
+    circle at 38% 32%,
+    #fff7df 0%,
+    var(--on) 55%,
+    #b9851c 100%
+  );
+  box-shadow:
+    0 0 6px var(--glow),
+    0 0 15px var(--glow2);
   animation: mq-twinkle 4s ease-in-out infinite;
   will-change: filter, opacity;
 }
 
 /* Twinkle never falls below a readable floor (brightness .72 / opacity .82). */
 @keyframes mq-twinkle {
-  0%, 100% { filter: brightness(1.08) saturate(1.05); opacity: 1; }
-  50%       { filter: brightness(0.72) saturate(0.95); opacity: 0.82; }
+  0%,
+  100% {
+    filter: brightness(1.08) saturate(1.05);
+    opacity: 1;
+  }
+  50% {
+    filter: brightness(0.72) saturate(0.95);
+    opacity: 0.82;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mq-bulb.on { animation: none; }
+  .mq-bulb.on {
+    animation: none;
+  }
 }
 
 /* ---- variant: duo (gold core + red halo) ---- */
@@ -63,7 +79,9 @@
 }
 
 .v-duo .mq-bulb.on {
-  box-shadow: 0 0 6px rgba(255, 201, 74, 0.95), 0 0 17px rgba(232, 25, 44, 0.55);
+  box-shadow:
+    0 0 6px rgba(255, 201, 74, 0.95),
+    0 0 17px rgba(232, 25, 44, 0.55);
 }
 
 /* ---- variant: ember (small dense LEDs, big bloom) ---- */
@@ -81,7 +99,12 @@
 
 .v-ember .mq-bulb.on {
   border-radius: 32%;
-  background: radial-gradient(circle at 40% 35%, #fffdf2 0%, var(--on) 60%, #b9851c 100%);
+  background: radial-gradient(
+    circle at 40% 35%,
+    #fffdf2 0%,
+    var(--on) 60%,
+    #b9851c 100%
+  );
   box-shadow:
     0 0 5px rgba(255, 201, 74, 1),
     0 0 12px rgba(255, 201, 74, 0.6),
@@ -90,6 +113,13 @@
 }
 
 @keyframes mq-twinkle-ember {
-  0%, 100% { filter: brightness(1.12); opacity: 1; }
-  50%       { filter: brightness(0.8); opacity: 0.9; }
+  0%,
+  100% {
+    filter: brightness(1.12);
+    opacity: 1;
+  }
+  50% {
+    filter: brightness(0.8);
+    opacity: 0.9;
+  }
 }

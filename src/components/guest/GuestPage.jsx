@@ -32,12 +32,29 @@ const BallLines = () => (
   </svg>
 )
 
-function PairRow({ rank, pareja, categoria, grupo, amount, leader, onClick, glowDelay, glowDuration }) {
+function PairRow({
+  rank,
+  pareja,
+  categoria,
+  grupo,
+  amount,
+  leader,
+  onClick,
+  glowDelay,
+  glowDuration,
+}) {
   const glowing = glowDelay !== undefined && glowDuration !== undefined
   return (
     <div
       className={`row${leader ? ' leader' : ''}${onClick ? ' clickable' : ''}${glowing ? ' glowing' : ''}`}
-      style={glowing ? { '--glow-delay': `${glowDelay}s`, '--glow-duration': `${glowDuration}s` } : undefined}
+      style={
+        glowing
+          ? {
+              '--glow-delay': `${glowDelay}s`,
+              '--glow-duration': `${glowDuration}s`,
+            }
+          : undefined
+      }
       onClick={onClick}
     >
       <div className="rank-ball">
@@ -258,20 +275,24 @@ export default function GuestPage() {
 
   return (
     <div className="app-layout">
-    <div className="page">
-      <header>
-        <div className="header-marquee">
-          <MarqueeTitle text="Torneo 2do|Aniversario" variant="duo" />
-        </div>
-        <div className="header-bottom">
-          <div className="header-meta">
-            <span>{tournament.club}</span>
-            <span className="dates">{tournament.dates}</span>
+      <div className="page">
+        <header>
+          <div className="header-marquee">
+            <MarqueeTitle text="Torneo 2do|Aniversario" variant="duo" />
           </div>
-          <button className="search-btn" onClick={() => setSearchOpen(true)} aria-label="Buscar pareja">
-            ⌕
-          </button>
-        </div>
+          <div className="header-bottom">
+            <div className="header-meta">
+              <span>{tournament.club}</span>
+              <span className="dates">{tournament.dates}</span>
+            </div>
+            <button
+              className="search-btn"
+              onClick={() => setSearchOpen(true)}
+              aria-label="Buscar pareja"
+            >
+              ⌕
+            </button>
+          </div>
         </header>
 
         <div className="tote">
@@ -287,7 +308,11 @@ export default function GuestPage() {
             <div className="tote-label"># Parejas</div>
             <div className="tote-value">{pairs.length}</div>
           </div>
-          <button className="search-btn" onClick={() => setSearchOpen(true)} aria-label="Buscar pareja">
+          <button
+            className="search-btn"
+            onClick={() => setSearchOpen(true)}
+            aria-label="Buscar pareja"
+          >
             ⌕
           </button>
         </div>
@@ -308,23 +333,23 @@ export default function GuestPage() {
           ))}
         </div>
 
-      <div className="section-title">Top 5 Global</div>
-      <div className="rows">
-        {topFive.map((p, i) => (
-          <PairRow
-            key={p.id}
-            rank={i + 1}
-            pareja={p.pareja}
-            categoria={p.categoria}
-            grupo={p.grupo}
-            amount={p.amount}
-            leader={i === 0}
-            onClick={() => openModal(p)}
-            glowDelay={i * 1.5}
-            glowDuration={7.5}
-          />
-        ))}
-      </div>
+        <div className="section-title">Top 5 Global</div>
+        <div className="rows">
+          {topFive.map((p, i) => (
+            <PairRow
+              key={p.id}
+              rank={i + 1}
+              pareja={p.pareja}
+              categoria={p.categoria}
+              grupo={p.grupo}
+              amount={p.amount}
+              leader={i === 0}
+              onClick={() => openModal(p)}
+              glowDelay={i * 1.5}
+              glowDuration={7.5}
+            />
+          ))}
+        </div>
         <div className="section-title">Por Categoría</div>
 
         <div className="cat-select-wrap">

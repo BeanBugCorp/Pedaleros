@@ -13,11 +13,17 @@
 
 /* ---- header ---- */
 header {
-  display: flex; flex-direction: column; align-items: center;
-  padding: 26px 24px 6px; gap: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 26px 24px 6px;
+  gap: 14px;
 }
 .header-marquee {
-  width: 100%; display: flex; justify-content: center; overflow: hidden;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
 }
 .header-marquee .mq-root {
   /* (100vw - 56px) / 84 keeps the 11-char longest line inside the padded header on every screen size */
@@ -27,7 +33,10 @@ header {
   --rowgap: calc(var(--bulb) * 1.125);
 }
 .header-bottom {
-  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .header-meta {
   display: flex;
@@ -393,23 +402,31 @@ footer {
 
 /* ---- lightbulb glow animations ---- */
 @keyframes bulb-glow {
-  0%, 21%, 100% {
+  0%,
+  21%,
+  100% {
     box-shadow: none;
     border-color: var(--red-dim);
   }
   10% {
-    box-shadow: 0 0 28px rgba(255,201,74,0.8), 0 0 60px rgba(255,201,74,0.35);
+    box-shadow:
+      0 0 28px rgba(255, 201, 74, 0.8),
+      0 0 60px rgba(255, 201, 74, 0.35);
     border-color: var(--gold);
   }
 }
 
 @keyframes bulb-glow-leader {
-  0%, 21%, 100% {
-    box-shadow: 0 0 16px rgba(255,201,74,0.18);
+  0%,
+  21%,
+  100% {
+    box-shadow: 0 0 16px rgba(255, 201, 74, 0.18);
     border-color: var(--gold);
   }
   10% {
-    box-shadow: 0 0 36px rgba(255,201,74,0.95), 0 0 72px rgba(255,201,74,0.5);
+    box-shadow:
+      0 0 36px rgba(255, 201, 74, 0.95),
+      0 0 72px rgba(255, 201, 74, 0.5);
     border-color: var(--gold);
   }
 }
