@@ -1,0 +1,51 @@
+/* ===========================================================================
+   auction.global.css  —  keyframes (global, bundled by Vite → CSP-safe)
+   Import ONCE (e.g. in AuctionPage.jsx). No 'unsafe-inline'.
+   Fonts are loaded via Google Fonts <link> in index.html.
+   =========================================================================== */
+
+/* ---- Keyframes ----------------------------------------------------------- */
+@keyframes bulbPulse   { 0%, 100% { opacity: 1; }   50% { opacity: .4; } }
+@keyframes bulbPulse2  { 0%, 100% { opacity: .4; }  50% { opacity: 1; } }
+
+@keyframes flameFlicker {
+  0%, 100% { transform: scaleY(1) translateY(0); opacity: .92; }
+  50%      { transform: scaleY(1.28) translateY(-7px); opacity: 1; }
+}
+@keyframes fireGrow {
+  0%, 100% { transform: scaleY(.92); }
+  50%      { transform: scaleY(1.08); }
+}
+
+@keyframes coinFall {
+  0%   { transform: translateY(-40px) rotate(0); opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translateY(620px) rotate(720deg); opacity: 0; }
+}
+@keyframes confettiFall {
+  0%   { transform: translateY(-30px) rotate(0); opacity: 1; }
+  100% { transform: translateY(660px) rotate(560deg); opacity: 0; }
+}
+
+@keyframes bannerPop {
+  0%   { transform: scale(.5) rotate(-4deg); opacity: 0; }
+  60%  { transform: scale(1.1) rotate(1deg); }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+@keyframes ringFlash {
+  0%, 100% { box-shadow: 0 0 0 2px #e9c24c, 0 0 30px 6px rgba(233, 194, 76, .5); }
+  50%      { box-shadow: 0 0 0 3px #ff4d6d, 0 0 46px 12px rgba(255, 77, 109, .6); }
+}
+
+/* ---- Accessibility: respect reduced-motion -------------------------------
+   Kills the continuous loops (bulbs, fire flicker/pulse, glow, rain) and the
+   one-shot pops, but state changes (tier swaps, celebration, advance) remain
+   instant so the auction is still fully usable. -------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
