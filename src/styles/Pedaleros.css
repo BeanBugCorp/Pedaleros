@@ -1,17 +1,16 @@
-:root{
-    --black:#0B0710;
-    --black-2:#15101C;
-    --black-3:#1B1420;
-    --red:#E8192C;
-    --red-dim:#8C0F1C;
-    --gold:#FFc94A;
-    --gold-dim:#a8853a;
-    --pink:#ff2d5f;
-    --cream:#f5efe6;
-    --ball:#d4f22b;
-    --ball-dark:#7a9417;
-    --font-display: 'Anton', sans-serif;
-    --font-body: 'DM Sans', sans-serif;
-    --font-mono: 'Space Mono', monospace;
-
+:root {
+  --black: #0b0710;
+  --black-2: #15101c;
+  --black-3: #1b1420;
+  --red: #e8192c;
+  --red-dim: #8c0f1c;
+  --gold: #ffc94a;
+  --gold-dim: #a8853a;
+  --pink: #ff2d5f;
+  --cream: #f5efe6;
+  --ball: #d4f22b;
+  --ball-dark: #7a9417;
+  --font-display: 'Anton', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'Space Mono', monospace;
 }
