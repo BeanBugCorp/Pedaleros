@@ -1,7 +1,15 @@
 import { useState } from 'react'
-import { tournament, categories, pairs } from '../../data/content'
+import { tournament } from '../../data/content'
+import {
+  useEventSalesSummary,
+  useSortedPairs,
+  useCategoryNames,
+} from '../../hooks/useGuestData'
 import MarqueeTitle from './MarqueeTitle'
 import './GuestPage.css'
+
+// TODO: source this from routing/props once events are selectable.
+const EVENT_ID = '6311c366-3851-4bf8-a413-e86904945f76'
 
 const fmt = (n) => '$' + Number(n).toLocaleString('en-US')
 
@@ -244,20 +252,24 @@ function SearchOverlay({ onClose, sortedAll, onSelectPair }) {
 }
 
 export default function GuestPage() {
-  const [selectedCat, setSelectedCat] = useState(categories[0])
+  const [selectedCat, setSelectedCat] = useState(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [catModalOpen, setCatModalOpen] = useState(false)
   const [modalPair, setModalPair] = useState(null)
   const [modalOnBack, setModalOnBack] = useState(null)
 
-  const sortedAll = [...pairs].sort((a, b) => b.amount - a.amount)
-  const topFive = sortedAll.slice(0, 5)
-  const totalPool = pairs.reduce((s, p) => s + p.amount, 0)
-  const maxWin = sortedAll[0]?.amount ?? 0
-  const catPairs = pairs
-    .filter((p) => p.categoria === selectedCat)
-    .sort((a, b) => b.amount - a.amount)
+  const { totalSales, maxSale, numPairs } = useEventSalesSummary(EVENT_ID)
+  const { sortedPairs } = useSortedPairs(EVENT_ID)
+  const { categoryNames } = useCategoryNames(EVENT_ID)
+
+  // Fall back to the first DB category until the user picks one.
+  const activeCat = selectedCat ?? categoryNames[0] ?? null
+
+  // sortedPairs already comes sorted by sale amount (desc) from the DB.
+  const sortedAll = sortedPairs
+  const topPairs = sortedAll.slice(0, 5)
+  const catPairs = sortedAll.filter((p) => p.categoria === activeCat)
 
   const openModal = (pair) => {
     setModalPair(pair)
@@ -298,15 +310,15 @@ export default function GuestPage() {
         <div className="tote">
           <div className="tote-stat">
             <div className="tote-label">Pozo Total</div>
-            <div className="tote-value">{fmt(totalPool)}</div>
+            <div className="tote-value">{fmt(totalSales)}</div>
           </div>
           <div className="tote-stat">
             <div className="tote-label">Max Ganancia</div>
-            <div className="tote-value">{fmt(maxWin)}</div>
+            <div className="tote-value">{fmt(maxSale)}</div>
           </div>
           <div className="tote-stat">
             <div className="tote-label"># Parejas</div>
-            <div className="tote-value">{pairs.length}</div>
+            <div className="tote-value">{numPairs}</div>
           </div>
           <button
             className="search-btn"
@@ -319,7 +331,7 @@ export default function GuestPage() {
 
         <div className="section-title">Top 5 Global</div>
         <div className="rows">
-          {topFive.map((p, i) => (
+          {topPairs.map((p, i) => (
             <PairRow
               key={p.id}
               rank={i + 1}
@@ -335,7 +347,7 @@ export default function GuestPage() {
 
         <div className="section-title">Top 5 Global</div>
         <div className="rows">
-          {topFive.map((p, i) => (
+          {topPairs.map((p, i) => (
             <PairRow
               key={p.id}
               rank={i + 1}
@@ -357,12 +369,12 @@ export default function GuestPage() {
             className={`cat-select${dropdownOpen ? ' open' : ''}`}
             onClick={() => setDropdownOpen((o) => !o)}
           >
-            <span className="label">{selectedCat}</span>
+            <span className="label">{activeCat}</span>
             <span className="chevron">▾</span>
           </div>
           <div className={`cat-menu${dropdownOpen ? ' open' : ''}`}>
             <div className="cat-menu-inner">
-              {categories.map((cat) => (
+              {categoryNames.map((cat) => (
                 <div
                   key={cat}
                   className="cat-option"
@@ -380,7 +392,7 @@ export default function GuestPage() {
         </div>
 
         <div className="rows" style={{ marginTop: '14px' }}>
-          {catPairs.map((p, i) => (
+          {catPairs.slice(0, 5).map((p, i) => (
             <PairRow
               key={p.id}
               rank={i + 1}
@@ -459,7 +471,7 @@ export default function GuestPage() {
 
       {catModalOpen && (
         <CategoryModal
-          categoria={selectedCat}
+          categoria={activeCat}
           catPairs={catPairs}
           onClose={() => setCatModalOpen(false)}
           onSelectPair={(p) => {
