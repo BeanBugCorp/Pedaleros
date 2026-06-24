@@ -392,7 +392,7 @@ export default function GuestPage() {
         </div>
 
         <div className="rows" style={{ marginTop: '14px' }}>
-          {catPairs.slice(0, 5).map((p, i) => (
+          {catPairs.slice(0, 3).map((p, i) => (
             <PairRow
               key={p.id}
               rank={i + 1}
