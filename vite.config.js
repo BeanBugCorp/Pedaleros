@@ -7,7 +7,7 @@ const securityHeadersLocal = {
   'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
   'X-Content-Type-Options': 'nosniff',
   'content-security-policy-report-only':
-    "default-src 'self'; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' https://fonts.googleapis.com; script-src 'self'; img-src 'self'; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
+    "default-src 'self'; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' https://fonts.googleapis.com; script-src 'self'; img-src 'self'; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
   'Strict-Transport-Security': 'max-age=3600; includeSubDomains',
 }
 
@@ -17,7 +17,7 @@ const securityHeadersProduction = {
   'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
   'X-Content-Type-Options': 'nosniff',
   'content-security-policy':
-    "default-src 'self'; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' https://fonts.googleapis.com; script-src 'self'; img-src 'self'; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; require-trusted-types-for 'script'; trusted-types 'none'",
+    "default-src 'self'; font-src 'self' https://fonts.gstatic.com data:; style-src 'self' https://fonts.googleapis.com; script-src 'self'; img-src 'self'; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; require-trusted-types-for 'script'; trusted-types 'none'",
   'Strict-Transport-Security': 'max-age=3600; includeSubDomains',
 }
 
