@@ -320,13 +320,6 @@ export default function GuestPage() {
             <div className="tote-label"># Parejas</div>
             <div className="tote-value">{numPairs}</div>
           </div>
-          <button
-            className="search-btn"
-            onClick={() => setSearchOpen(true)}
-            aria-label="Buscar pareja"
-          >
-            ⌕
-          </button>
         </div>
 
         <div className="section-title">Top 5 Global</div>
