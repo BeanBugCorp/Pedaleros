@@ -334,22 +334,6 @@ export default function GuestPage() {
               amount={p.amount}
               leader={i === 0}
               onClick={() => openModal(p)}
-            />
-          ))}
-        </div>
-
-        <div className="section-title">Top 5 Global</div>
-        <div className="rows">
-          {topPairs.map((p, i) => (
-            <PairRow
-              key={p.id}
-              rank={i + 1}
-              pareja={p.pareja}
-              categoria={p.categoria}
-              grupo={p.grupo}
-              amount={p.amount}
-              leader={i === 0}
-              onClick={() => openModal(p)}
               glowDelay={i * 1.5}
               glowDuration={7.5}
             />
@@ -394,6 +378,8 @@ export default function GuestPage() {
               amount={p.amount}
               leader={i === 0}
               onClick={() => openModal(p)}
+              glowDelay={i * 1.5}
+              glowDuration={7.5}
             />
           ))}
         </div>
