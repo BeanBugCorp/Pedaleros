@@ -95,13 +95,14 @@ export function useSortedPairs(eventId) {
 }
 
 // Loads the category names for an event (ordered by sort_order), via the
-// get_category_names_by_event Postgres function. Returns an array of strings.
-export function useCategoryNames(eventId) {
-  const [categoryNames, setCategoryNames] = useState([])
+// get_category_names_by_event Postgres function. Returns an array of
+// { name, gender } objects, ordered by name.
+export function useCategories(eventId) {
+  const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  const reloadCategoryNames = useCallback(async () => {
+  const reloadCategories = useCallback(async () => {
     if (!eventId) return
 
     setLoading(true)
@@ -111,22 +112,23 @@ export function useCategoryNames(eventId) {
         'get_category_names_by_event',
         { p_event_id: eventId },
       )
-      console.log(data)
+
       if (rpcError) throw rpcError
 
-      setCategoryNames((data ?? []).map((row) => row.name))
+      setCategories(
+        (data ?? []).map((row) => ({ name: row.name, gender: row.gender })),
+      )
     } catch (err) {
       setError(err)
     } finally {
       setLoading(false)
-      console.log(categoryNames)
     }
   }, [eventId])
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- fetch-on-mount
-    reloadCategoryNames()
-  }, [reloadCategoryNames])
+    reloadCategories()
+  }, [reloadCategories])
 
-  return { categoryNames, loading, error, reloadCategoryNames }
+  return { categories, loading, error, reloadCategories }
 }
