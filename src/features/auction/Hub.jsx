@@ -128,7 +128,25 @@ export default function Hub({ data, onStartGroup, onStartCategory, onEdit }) {
           ))}
         </div>
 
-        <div className={styles.footer}>{data.footer}</div>
+        <div className={styles.footer}>
+          © 2026 CALCUTA FLOÜ · PEDALEROS
+          <div className = {styles.brand}>
+            <img
+            className = {styles.logo}
+            src="/beanbug-logo.png"
+            alt = "BeanBug Corp"
+            />
+            <a
+              className= {styles.link}
+              href="https://beanbugcorp.com"
+              target="_blank"
+              rel="noreferrer"
+            >
+              beanbugcorp.com
+            </a>
+            </div>
+  
+        </div>
       </div>
     </div>
   );
