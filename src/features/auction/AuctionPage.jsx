@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Hub from './Hub';
 import LiveAuction from './LiveAuction';
 import Edit from './Edit';
+import GroupView from './GroupView';
 import { tournament } from './content'; // delete after we rescue data from DB.
 import './auction.global.css'; // keyframes imported once for the whole auction feature
 
@@ -22,13 +23,19 @@ export default function AuctionPage() {
       {view.screen === 'hub' && (
         <Hub
           data={tournament}
-          onStartGroup={(category, group, pairs) =>
-            setView({ screen: 'live', category, group, pairs })
-          }
+          onViewGroup={(catName, group) => setView({ screen: 'group', catName, group })}
           onStartCategory={(category, pairs) =>
             setView({ screen: 'live', category, group: '', pairs })
           }
           onEdit={(category) => setView({ screen: 'edit', category })}
+        />
+      )}
+
+      {view.screen === 'group' && (
+        <GroupView
+          categoryName={view.catName}
+          group={view.group}
+          onBack={goHub}
         />
       )}
 

@@ -11,7 +11,7 @@ import styles from './Hub.module.css';
  *  - onStartCategory(category, pairs):         launch the whole category (all groups flattened)
  *  - onEdit(category):                         open organizer edit for a category (optional)
  */
-export default function Hub({ data, onStartGroup, onStartCategory, onEdit }) {
+export default function Hub({ data, onViewGroup, onStartCategory, onEdit }) {
   const [divIdx, setDivIdx] = useState(0);
   const division = data.divisions[divIdx];
 
@@ -116,9 +116,7 @@ export default function Hub({ data, onStartGroup, onStartCategory, onEdit }) {
                   <button
                     key={g.name}
                     className={styles.groupBtn}
-                    onClick={() =>
-                      onStartGroup?.(cat.name, g.name, g.pairs.map((p) => ({ ...p, group: g.name })))
-                    }
+                    onClick={() => onViewGroup?.(cat.name, g)}
                   >
                     <span>{g.name}</span>
                     <span className={styles.groupMeta}>{groupMeta(g)}</span>
