@@ -124,4 +124,31 @@
 .footer {
   margin-top: 60px; border-top: 1px solid #3a1620; padding-top: 18px; text-align: center;
   font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 3px; color: #7a5a45;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 18px;
+  height: auto;
+  opacity: 0.55;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: #7a5a45;
+  text-decoration: none;
+  transition: color 0.2s;
 }
