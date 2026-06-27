@@ -2,8 +2,12 @@ import { useState } from 'react';
 import Hub from './Hub';
 import LiveAuction from './LiveAuction';
 import Edit from './Edit';
-import { tournament, thresholds } from './content';
+import { thresholds } from './content';
+import { useAuctionData } from '../../hooks/useAuctionData';
 import './auction.global.css'; // keyframes imported once for the whole auction feature
+
+// TODO: source this from routing/props once events are selectable.
+const EVENT_ID = '6311c366-3851-4bf8-a413-e86904945f76';
 
 /**
  * AuctionPage — wires the Hub (starting page) to the Live Auction.
@@ -13,13 +17,16 @@ import './auction.global.css'; // keyframes imported once for the whole auction 
 export default function AuctionPage() {
   const [view, setView] = useState({ screen: 'hub' });
 
+  // DB categories + pairs, already reshaped into the tournament structure.
+  const { data } = useAuctionData(EVENT_ID);
+
   const goHub = () => setView({ screen: 'hub' });
 
   return (
     <>
       {view.screen === 'hub' && (
         <Hub
-          data={tournament}
+          data={data}
           onStartGroup={(category, group, pairs) =>
             setView({ screen: 'live', category, group, pairs })
           }

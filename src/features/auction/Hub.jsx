@@ -1,5 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import styles from './Hub.module.css';
+import { useEventSalesSummary } from '../../hooks/useGuestData';
+
+// TODO: source this from routing/props once events are selectable.
+const EVENT_ID = '6311c366-3851-4bf8-a413-e86904945f76';
 
 /**
  * Hub / Categories — the starting page. CSP-clean (same rules as LiveAuction):
@@ -15,22 +19,8 @@ export default function Hub({ data, onStartGroup, onStartCategory, onEdit }) {
   const [divIdx, setDivIdx] = useState(0);
   const division = data.divisions[divIdx];
 
-  // pot / max / count across the whole tournament
-  const stats = useMemo(() => {
-    let pot = 0, max = 0, count = 0;
-    data.divisions.forEach((d) =>
-      d.categories.forEach((c) =>
-        c.groups.forEach((g) =>
-          g.pairs.forEach((p) => {
-            count += 1;
-            pot += p.bid || 0;
-            if ((p.bid || 0) > max) max = p.bid || 0;
-          })
-        )
-      )
-    );
-    return { pot, max, count };
-  }, [data]);
+  // pot / max / count for the event, from the DB sales summary
+  const { totalSales, maxSale, numPairs } = useEventSalesSummary(EVENT_ID);
 
   const money = (n) => '$' + (n || 0).toLocaleString('en-US');
 
@@ -79,15 +69,15 @@ export default function Hub({ data, onStartGroup, onStartCategory, onEdit }) {
         <div className={styles.statStrip}>
           <div className={styles.stat}>
             <div className={styles.statLabel}>POZO TOTAL</div>
-            <div className={styles.statValue}>{money(stats.pot)}</div>
+            <div className={styles.statValue}>{money(totalSales)}</div>
           </div>
           <div className={styles.stat}>
             <div className={styles.statLabel}>MAX GANANCIA</div>
-            <div className={styles.statValue}>{money(stats.max)}</div>
+            <div className={styles.statValue}>{money(maxSale)}</div>
           </div>
           <div className={`${styles.stat} ${styles.statLast}`}>
             <div className={styles.statLabel}># PAREJAS</div>
-            <div className={styles.statValue}>{stats.count}</div>
+            <div className={styles.statValue}>{numPairs}</div>
           </div>
         </div>
 

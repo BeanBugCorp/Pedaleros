@@ -3,7 +3,7 @@ import { tournament } from '../../data/content'
 import {
   useEventSalesSummary,
   useSortedPairs,
-  useCategoryNames,
+  useCategories,
 } from '../../hooks/useGuestData'
 import MarqueeTitle from './MarqueeTitle'
 import './GuestPage.css'
@@ -261,10 +261,10 @@ export default function GuestPage() {
 
   const { totalSales, maxSale, numPairs } = useEventSalesSummary(EVENT_ID)
   const { sortedPairs } = useSortedPairs(EVENT_ID)
-  const { categoryNames } = useCategoryNames(EVENT_ID)
+  const { categories } = useCategories(EVENT_ID)
 
   // Fall back to the first DB category until the user picks one.
-  const activeCat = selectedCat ?? categoryNames[0] ?? null
+  const activeCat = selectedCat ?? categories[0]?.name ?? null
 
   // sortedPairs already comes sorted by sale amount (desc) from the DB.
   const sortedAll = sortedPairs
@@ -367,17 +367,17 @@ export default function GuestPage() {
           </div>
           <div className={`cat-menu${dropdownOpen ? ' open' : ''}`}>
             <div className="cat-menu-inner">
-              {categoryNames.map((cat) => (
+              {categories.map((cat) => (
                 <div
-                  key={cat}
+                  key={cat.name}
                   className="cat-option"
                   onClick={(e) => {
                     e.stopPropagation()
-                    setSelectedCat(cat)
+                    setSelectedCat(cat.name)
                     setDropdownOpen(false)
                   }}
                 >
-                  {cat}
+                  {cat.name}
                 </div>
               ))}
             </div>
