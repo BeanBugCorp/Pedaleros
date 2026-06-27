@@ -21,13 +21,13 @@ export default function GroupView({ categoryName, group, onBack }) {
         <div className={styles.header}>
           <button className={styles.back} onClick={onBack}>‹ VOLVER</button>
           <div>
-            <h2 className={styles.h2}>{categoryName}</h2>
-            <div className={styles.catLabel}>{group.name}</div>
+            <h2 className={styles.h2}>{group.name}</h2>
+            <div className={styles.catLabel}>{categoryName}</div>
           </div>
         </div>
 
         <div className={styles.groupCard}>
-          <div className={styles.groupName}>{group.name}</div>
+          {/* <div className={styles.groupName}>{group.name}</div> */}
 
           {group.pairs.map((pair, i) => (
             <div key={i} className={`${styles.pairRow} ${pair.omit ? styles.pairOmit : ''}`}>
