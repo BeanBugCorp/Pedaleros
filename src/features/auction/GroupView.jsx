@@ -22,6 +22,7 @@ export default function GroupView({ categoryName, group, onBack }) {
           <button className={styles.back} onClick={onBack}>‹ VOLVER</button>
           <div>
             <h2 className={styles.h2}>{categoryName}</h2>
+            <div className={styles.catLabel}>{group.name}</div>
           </div>
         </div>
 
