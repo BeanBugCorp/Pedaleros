@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Hub from './Hub';
 import LiveAuction from './LiveAuction';
 import Edit from './Edit';
-import { tournament, thresholds } from './content';
+import { tournament } from './content'; // delete after we rescue data from DB.
 import './auction.global.css'; // keyframes imported once for the whole auction feature
 
 /**
@@ -14,6 +14,8 @@ export default function AuctionPage() {
   const [view, setView] = useState({ screen: 'hub' });
 
   const goHub = () => setView({ screen: 'hub' });
+
+  const thresholds = { spark: 200, fire: 2500, jackpot: 5000 };
 
   return (
     <>
