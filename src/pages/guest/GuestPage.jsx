@@ -2,7 +2,7 @@ import { useState } from 'react'
 import {
   useEventSalesSummary,
   useSortedPairs,
-  useCategoryNames,
+  useCategories,
 } from '../../hooks/useGuestData'
 import PageHeader from '../../components/guest/PageHeader/PageHeader'
 import ToteBoard from '../../components/guest/ToteBoard/ToteBoard'
@@ -15,7 +15,7 @@ import SearchOverlay from '../../components/guest/SearchOverlay/SearchOverlay'
 import './GuestPage.css'
 
 // TODO: source this from routing/props once events are selectable.
-const EVENT_ID = '6311c366-3851-4bf8-a413-e86904945f76'
+const EVENT_ID = 'e610f10c-9aad-401f-b5bc-06bce2df9439'
 
 export default function GuestPage() {
   const [selectedCat, setSelectedCat] = useState(null)
@@ -27,8 +27,9 @@ export default function GuestPage() {
 
   const { totalSales, maxSale, numPairs } = useEventSalesSummary(EVENT_ID)
   const { sortedPairs } = useSortedPairs(EVENT_ID)
-  const { categoryNames } = useCategoryNames(EVENT_ID)
+  const { categories } = useCategories(EVENT_ID)
 
+  const categoryNames = categories.map((c) => c.name)
   const activeCat = selectedCat ?? categoryNames[0] ?? null
   const sortedAll = sortedPairs
   const topPairs = sortedAll.slice(0, 5)
