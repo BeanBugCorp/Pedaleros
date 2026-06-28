@@ -19,13 +19,28 @@ export default function AuctionPage() {
   const [view, setView] = useState({ screen: 'hub' });
 
   // DB categories + pairs, already reshaped into the tournament structure.
-  const { data } = useAuctionData(EVENT_ID);
+  const { data, reload } = useAuctionData(EVENT_ID);
   const { editPair } = useEditPair();
 
   const goHub = () => setView({ screen: 'hub' });
 
   // Persists a pair via edit_pair (maps the engine pair to the function input).
   const persistPair = (pair) => editPair(toEditPairInput(pair));
+
+  // Open the edit screen by category name and pull fresh data from the DB.
+  const openEdit = (category) => {
+    reload();
+    setView({ screen: 'edit', category: category.name });
+  };
+
+  // Resolve the category to edit from the current (possibly just-refetched)
+  // data, so Edit always reflects the latest DB values rather than a snapshot.
+  const editCategory =
+    view.screen === 'edit'
+      ? (data.divisions
+          .flatMap((d) => d.categories)
+          .find((c) => c.name === view.category) ?? null)
+      : null;
 
   return (
     <>
@@ -38,13 +53,13 @@ export default function AuctionPage() {
           onStartCategory={(category, pairs) =>
             setView({ screen: 'live', category, group: '', pairs })
           }
-          onEdit={(category) => setView({ screen: 'edit', category })}
+          onEdit={openEdit}
         />
       )}
 
       {view.screen === 'edit' && (
         <Edit
-          category={view.category}
+          category={editCategory}
           onBack={() => setView({ screen: 'hub' })}
           onSavePair={persistPair}
           onChange={() => {/* persist if/when you have a backend */}}
