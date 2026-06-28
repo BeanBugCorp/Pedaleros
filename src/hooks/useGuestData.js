@@ -55,6 +55,9 @@ function toUiPair(row) {
     amount: row.amount,
     players: [row.player1, row.player2],
     photos: [row.photo_url_1, row.photo_url_2],
+    // Carried through for edit_pair; present only if the RPC selects them.
+    teamName: row.team_name ?? null,
+    status: row.status ?? null,
   }
 }
 
@@ -94,9 +97,9 @@ export function useSortedPairs(eventId) {
   return { sortedPairs, loading, error, reloadSortedPairs }
 }
 
-// Loads the category names for an event (ordered by sort_order), via the
-// get_category_names_by_event Postgres function. Returns an array of
-// { name, gender } objects, ordered by name.
+// Loads the categories for an event via the get_categories Postgres function.
+// Returns an array of { name, gender, sort_order } objects, ordered by
+// sort_order ascending (nulls last).
 export function useCategories(eventId) {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
@@ -109,14 +112,24 @@ export function useCategories(eventId) {
     setError(null)
     try {
       const { data, error: rpcError } = await supabase.rpc(
-        'get_category_names_by_event',
+        'get_categories',
         { p_event_id: eventId },
       )
 
       if (rpcError) throw rpcError
 
       setCategories(
-        (data ?? []).map((row) => ({ name: row.name, gender: row.gender })),
+        (data ?? [])
+          .map((row) => ({
+            name: row.name,
+            gender: row.gender,
+            sort_order: row.sort_order,
+          }))
+          // Order by sort_order asc; nulls last. Both the guest dropdown and
+          // the auction engine consume this order directly.
+          .sort(
+            (a, b) => (a.sort_order ?? Infinity) - (b.sort_order ?? Infinity),
+          ),
       )
     } catch (err) {
       setError(err)

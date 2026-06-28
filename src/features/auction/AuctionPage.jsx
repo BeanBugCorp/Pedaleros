@@ -3,11 +3,12 @@ import Hub from './Hub';
 import LiveAuction from './LiveAuction';
 import Edit from './Edit';
 import { thresholds } from './content';
-import { useAuctionData } from '../../hooks/useAuctionData';
+import { useAuctionData, useEditPair } from '../../hooks/useAuctionData';
+import { toEditPairInput } from '../../lib/buildTournamentData';
 import './auction.global.css'; // keyframes imported once for the whole auction feature
 
 // TODO: source this from routing/props once events are selectable.
-const EVENT_ID = '6311c366-3851-4bf8-a413-e86904945f76';
+const EVENT_ID = 'e610f10c-9aad-401f-b5bc-06bce2df9439';
 
 /**
  * AuctionPage — wires the Hub (starting page) to the Live Auction.
@@ -19,8 +20,12 @@ export default function AuctionPage() {
 
   // DB categories + pairs, already reshaped into the tournament structure.
   const { data } = useAuctionData(EVENT_ID);
+  const { editPair } = useEditPair();
 
   const goHub = () => setView({ screen: 'hub' });
+
+  // Persists a pair via edit_pair (maps the engine pair to the function input).
+  const persistPair = (pair) => editPair(toEditPairInput(pair));
 
   return (
     <>
@@ -41,6 +46,7 @@ export default function AuctionPage() {
         <Edit
           category={view.category}
           onBack={() => setView({ screen: 'hub' })}
+          onSavePair={persistPair}
           onChange={() => {/* persist if/when you have a backend */}}
         />
       )}
@@ -53,12 +59,16 @@ export default function AuctionPage() {
           thresholds={thresholds}
           intensityFx={true}
           onConfirm={(pair, amount) => {
-            pair.bid = amount; // in-memory persistence — replace with DB write
+            pair.bid = amount;
             pair.omit = false;
+            pair.status = 'sold';
+            persistPair(pair);
           }}
           onOmit={(pair) => {
-            pair.omit = true; // in-memory persistence — replace with DB write
+            pair.omit = true;
             pair.bid = 0;
+            pair.status = 'skipped';
+            persistPair(pair);
           }}
           onClose={goHub}
           onExit={goHub}

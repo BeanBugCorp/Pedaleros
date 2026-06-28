@@ -8,13 +8,19 @@ import styles from './Edit.module.css';
  * Props:
  *  - category:  { name, groups: [{ name, pairs: [{a,b,bid,omit?}] }] }  one category from content.js
  *  - onBack():  return to the Hub
+ *  - onSavePair(pair):  OPTIONAL — persists a single pair (async, returns { error }).
+ *                       The per-pair Save button calls this when there are changes.
  *  - onChange(category):  OPTIONAL — called after every edit with the updated category,
  *                         so you can persist to your store/DB. If omitted, edits stay in
  *                         the in-memory objects (which are references into `tournament`).
  */
-export default function Edit({ category, onBack, onChange }) {
+export default function Edit({ category, onBack, onSavePair, onChange }) {
   const [, force] = useState(0);
-  const rerender = () => {
+  const [dirty, setDirty] = useState(() => new Set());
+  const [savingId, setSavingId] = useState(null);
+
+  const rerender = (pair) => {
+    setDirty((prev) => new Set(prev).add(pair.id));
     force((n) => n + 1);
     onChange?.(category);
   };
@@ -23,16 +29,34 @@ export default function Edit({ category, onBack, onChange }) {
 
   const setName = (pair, key, value) => {
     pair[key] = value;
-    rerender();
+    rerender(pair);
   };
   const setBid = (pair, value) => {
     pair.bid = parseInt((value || '').replace(/[^0-9]/g, '') || '0', 10);
-    rerender();
+    rerender(pair);
   };
-  const toggleOmit = (pair) => {
-    pair.omit = !pair.omit;
-    if (pair.omit) pair.bid = 0;
-    rerender();
+
+  const savePair = async (pair) => {
+    setSavingId(pair.id);
+    // A bid sets the pair as sold; otherwise keep its current status.
+    pair.status = pair.bid > 0 ? 'sold' : pair.status;
+    const { error } = (await onSavePair?.(pair)) ?? {};
+    setSavingId(null);
+    if (!error) {
+      setDirty((prev) => {
+        const next = new Set(prev);
+        next.delete(pair.id);
+        return next;
+      });
+    }
+  };
+
+  // Clears the amount, sets status to pending, and persists immediately.
+  const clearPair = (pair) => {
+    pair.bid = 0;
+    pair.status = 'pending';
+    rerender(pair);
+    savePair(pair);
   };
 
   if (!category) return null;
@@ -80,10 +104,19 @@ export default function Edit({ category, onBack, onChange }) {
                 </div>
 
                 <button
-                  className={pair.omit ? styles.omitOn : styles.omitOff}
-                  onClick={() => toggleOmit(pair)}
+                  className={styles.omitOn}
+                  onClick={() => clearPair(pair)}
+                  disabled={savingId === pair.id}
                 >
-                  {pair.omit ? 'OMITIDA' : 'OMITIR'}
+                  {savingId === pair.id ? 'BORRANDO…' : 'BORRAR'}
+                </button>
+
+                <button
+                  className={styles.save}
+                  onClick={() => savePair(pair)}
+                  disabled={!dirty.has(pair.id) || savingId === pair.id}
+                >
+                  {savingId === pair.id ? 'GUARDANDO…' : 'GUARDAR'}
                 </button>
               </div>
             ))}
