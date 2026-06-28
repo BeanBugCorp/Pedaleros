@@ -1,0 +1,62 @@
+/* ---- header ---- */
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 26px 24px 6px;
+  gap: 14px;
+}
+.header-marquee {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+.header-marquee .mq-root {
+  /* (100vw - 56px) / 84 keeps the 11-char longest line inside the padded header on every screen size */
+  --bulb: clamp(2.5px, calc((100vw - 56px) / 84), 5.5px);
+  --bgap: calc(var(--bulb) * 0.375);
+  --cgap: calc(var(--bulb) * 1.25);
+  --rowgap: calc(var(--bulb) * 1.125);
+}
+.header-bottom {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 13px;
+  color: var(--cream);
+  opacity: 0.8;
+}
+.header-meta .dates {
+  font-family: var(--font-mono);
+  color: var(--gold-dim);
+  font-size: 12px;
+}
+.search-btn {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-dim);
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 17px;
+  margin-top: 2px;
+  cursor: pointer;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
+}
+.search-btn:hover {
+  border-color: var(--gold);
+  box-shadow: 0 0 14px rgba(255, 201, 74, 0.4);
+}

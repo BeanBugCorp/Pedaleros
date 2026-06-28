@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import GuestPage from './components/guest/GuestPage'
+import GuestPage from './pages/guest/GuestPage'
 import AdminPage from './pages/admin/AdminPage'
 import AuctionPage from './features/auction/AuctionPage'
 
