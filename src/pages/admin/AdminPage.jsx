@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { tournament } from '../../data/content'
 import { useAuth } from '../../hooks/useAuth'
-import MarqueeTitle from '../../components/guest/MarqueeTitle'
+import MarqueeTitle from '../../components/guest/MarqueeTitle/MarqueeTitle'
 import { ImportData } from '../../components/admin/ImportData/ImportData'
 import './AdminPage.css'
 

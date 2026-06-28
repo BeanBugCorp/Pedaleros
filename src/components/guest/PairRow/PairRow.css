@@ -1,0 +1,153 @@
+/* ---- leaderboard rows ---- */
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 24px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(160deg, var(--black-3), var(--black-2));
+  border: 1px solid var(--red-dim);
+  border-radius: 12px;
+  padding: 12px 14px;
+  transition:
+    transform 0.2s,
+    border-color 0.2s;
+}
+.row:hover {
+  transform: translateY(-1px);
+  border-color: var(--red);
+}
+.row.leader {
+  border-color: var(--gold);
+  box-shadow: 0 0 16px rgba(255, 201, 74, 0.18);
+}
+
+/* ---- rank ball ---- */
+.rank-ball {
+  position: relative;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    #f3ffb0,
+    var(--ball) 55%,
+    var(--ball-dark) 100%
+  );
+  box-shadow:
+    0 0 7px rgba(212, 242, 43, 0.4),
+    inset 0 0 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.rank-ball svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.rank-ball .num {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 12.5px;
+  color: #1f3b14;
+}
+.row.leader .rank-ball {
+  width: 34px;
+  height: 34px;
+  box-shadow:
+    0 0 12px rgba(212, 242, 43, 0.55),
+    0 0 0 2px var(--gold),
+    0 0 10px rgba(255, 201, 74, 0.4);
+}
+
+.row-main {
+  flex: 1;
+  min-width: 0;
+}
+.pareja {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.grupo {
+  font-size: 11.5px;
+  color: var(--gold-dim);
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+.amount {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 14.5px;
+  color: var(--gold);
+}
+.row.leader .amount {
+  font-size: 16px;
+  text-shadow: 0 0 8px rgba(255, 201, 74, 0.5);
+}
+
+/* ---- clickable rows ---- */
+.row.clickable {
+  cursor: pointer;
+}
+
+/* ---- lightbulb glow animations ---- */
+@keyframes bulb-glow {
+  0%,
+  21%,
+  100% {
+    box-shadow: none;
+    border-color: var(--red-dim);
+  }
+  10% {
+    box-shadow:
+      0 0 28px rgba(255, 201, 74, 0.8),
+      0 0 60px rgba(255, 201, 74, 0.35);
+    border-color: var(--gold);
+  }
+}
+
+@keyframes bulb-glow-leader {
+  0%,
+  21%,
+  100% {
+    box-shadow: 0 0 16px rgba(255, 201, 74, 0.18);
+    border-color: var(--gold);
+  }
+  10% {
+    box-shadow:
+      0 0 36px rgba(255, 201, 74, 0.95),
+      0 0 72px rgba(255, 201, 74, 0.5);
+    border-color: var(--gold);
+  }
+}
+
+.row.glowing {
+  animation-name: bulb-glow;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+  animation-delay: var(--glow-delay, 0s);
+  animation-duration: var(--glow-duration, 7.5s);
+}
+
+.row.leader.glowing {
+  animation-name: bulb-glow-leader;
+}

@@ -1,0 +1,44 @@
+/* ---- tote board ---- */
+.tote {
+  margin: 22px 24px 0;
+  background: linear-gradient(160deg, var(--black-3), var(--black-2));
+  border: 1px solid var(--red-dim);
+  border-radius: 16px;
+  display: flex;
+  overflow: hidden;
+}
+.tote-stat {
+  flex: 1;
+  text-align: center;
+  padding: 18px 10px 16px;
+  position: relative;
+}
+.tote-stat + .tote-stat::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 14%;
+  bottom: 14%;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--gold-dim),
+    transparent
+  );
+}
+.tote-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 8px;
+}
+.tote-value {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 19px;
+  color: var(--gold);
+  text-shadow: 0 0 10px rgba(255, 201, 74, 0.45);
+}
