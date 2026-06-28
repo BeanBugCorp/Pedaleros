@@ -43,7 +43,7 @@ export default function AuctionPage() {
         <Edit
           category={view.category}
           onBack={() => setView({ screen: 'hub' })}
-          onChange={() => {/* persist if/when you have a backend */}}
+          onChange={() => {/* persist if/when you have a backend */ }}
         />
       )}
 

@@ -27,8 +27,6 @@ export default function GroupView({ categoryName, group, onBack }) {
         </div>
 
         <div className={styles.groupCard}>
-          {/* <div className={styles.groupName}>{group.name}</div> */}
-
           {group.pairs.map((pair, i) => (
             <div key={i} className={`${styles.pairRow} ${pair.omit ? styles.pairOmit : ''}`}>
               <span className={styles.nameCol}>{pair.a}</span>
