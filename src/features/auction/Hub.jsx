@@ -26,7 +26,7 @@ export default function Hub({ data, onViewGroup, onStartCategory, onEdit }) {
 
   const isGroupDone = (g) => g.pairs.length > 0 && g.pairs.every((p) => p.bid > 0);
   const isCatDone = (cat) => cat.groups.length > 0 && cat.groups.every(isGroupDone);
-  const groupMeta = (g) => `${isGroupDone(g) ? '✅ ' : ''}${g.pairs.length} parejas`;
+  const groupMeta = (g) => `${g.pairs.length} parejas`;
 
   const startCategory = (cat) => {
     // flatten all groups; tag each pair with its group for the live crumb
