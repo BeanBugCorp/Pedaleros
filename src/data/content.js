@@ -3,9 +3,17 @@ export const tournament = {
   name: 'Torneo 2do Aniversario',
   club: 'FLOÜ Padel Club',
   dates: '15-19 JUL 2026',
+  footer: '© 2026 CALCUTA FLOÜ · PEDALEROS',
   contact: 'contacto@calcutapadel.mx',
   year: 2026,
+  divisions: [
+    { id: 'varonil', name: 'Varonil' },
+    { id: 'femenil', name: 'Femenil' },
+  ],
 }
+
+/* Auction tiers (MXN). Tweakable per tournament. */
+export const thresholds = { spark: 500, fire: 2500, jackpot: 5000 }
 
 export const categories = ['Open', 'Femenil A', 'Varonil B']
 

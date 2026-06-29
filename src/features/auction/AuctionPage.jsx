@@ -3,8 +3,7 @@ import Hub from './Hub';
 import LiveAuction from './LiveAuction';
 import Edit from './Edit';
 import GroupView from './GroupView';
-import { tournament } from './content'; // delete after we rescue data from DB.
-import { thresholds } from './content';
+import { thresholds } from '../../data/content';
 import { useAuctionData, useEditPair } from '../../hooks/useAuctionData';
 import { toEditPairInput } from '../../lib/buildTournamentData';
 import './auction.global.css'; // keyframes imported once for the whole auction feature
