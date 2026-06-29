@@ -24,10 +24,7 @@ export default function Hub({ data, onViewGroup, onStartCategory, onEdit }) {
 
   const money = (n) => '$' + (n || 0).toLocaleString('en-US');
 
-  const groupMeta = (g) => {
-    const done = g.pairs.every((p) => p.bid > 0 || p.omit);
-    return done ? 'LISTO' : `${g.pairs.length} parejas`;
-  };
+  const groupMeta = (g) => `${g.pairs.length} parejas`;
 
   const startCategory = (cat) => {
     // flatten all groups; tag each pair with its group for the live crumb
