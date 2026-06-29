@@ -52,8 +52,16 @@
   background: var(--black-3);
   border: 1px solid var(--gold-dim);
   border-radius: 10px;
-  overflow: hidden;
+  max-height: 220px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   margin-top: -2px;
+  /* hide scrollbar while keeping it scrollable */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.cat-menu-inner::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 .cat-option {
   padding: 11px 16px;

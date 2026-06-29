@@ -2,8 +2,13 @@ import { useState } from 'react';
 import Hub from './Hub';
 import LiveAuction from './LiveAuction';
 import Edit from './Edit';
-import { tournament, thresholds } from './content';
+import { thresholds } from './content';
+import { useAuctionData, useEditPair } from '../../hooks/useAuctionData';
+import { toEditPairInput } from '../../lib/buildTournamentData';
 import './auction.global.css'; // keyframes imported once for the whole auction feature
+
+// TODO: source this from routing/props once events are selectable.
+const EVENT_ID = 'e610f10c-9aad-401f-b5bc-06bce2df9439';
 
 /**
  * AuctionPage — wires the Hub (starting page) to the Live Auction.
@@ -13,27 +18,50 @@ import './auction.global.css'; // keyframes imported once for the whole auction 
 export default function AuctionPage() {
   const [view, setView] = useState({ screen: 'hub' });
 
+  // DB categories + pairs, already reshaped into the tournament structure.
+  const { data, reload } = useAuctionData(EVENT_ID);
+  const { editPair } = useEditPair();
+
   const goHub = () => setView({ screen: 'hub' });
+
+  // Persists a pair via edit_pair (maps the engine pair to the function input).
+  const persistPair = (pair) => editPair(toEditPairInput(pair));
+
+  // Open the edit screen by category name and pull fresh data from the DB.
+  const openEdit = (category) => {
+    reload();
+    setView({ screen: 'edit', category: category.name });
+  };
+
+  // Resolve the category to edit from the current (possibly just-refetched)
+  // data, so Edit always reflects the latest DB values rather than a snapshot.
+  const editCategory =
+    view.screen === 'edit'
+      ? (data.divisions
+          .flatMap((d) => d.categories)
+          .find((c) => c.name === view.category) ?? null)
+      : null;
 
   return (
     <>
       {view.screen === 'hub' && (
         <Hub
-          data={tournament}
+          data={data}
           onStartGroup={(category, group, pairs) =>
             setView({ screen: 'live', category, group, pairs })
           }
           onStartCategory={(category, pairs) =>
             setView({ screen: 'live', category, group: '', pairs })
           }
-          onEdit={(category) => setView({ screen: 'edit', category })}
+          onEdit={openEdit}
         />
       )}
 
       {view.screen === 'edit' && (
         <Edit
-          category={view.category}
+          category={editCategory}
           onBack={() => setView({ screen: 'hub' })}
+          onSavePair={persistPair}
           onChange={() => {/* persist if/when you have a backend */}}
         />
       )}
@@ -46,12 +74,16 @@ export default function AuctionPage() {
           thresholds={thresholds}
           intensityFx={true}
           onConfirm={(pair, amount) => {
-            pair.bid = amount; // in-memory persistence — replace with DB write
+            pair.bid = amount;
             pair.omit = false;
+            pair.status = 'sold';
+            persistPair(pair);
           }}
           onOmit={(pair) => {
-            pair.omit = true; // in-memory persistence — replace with DB write
+            pair.omit = true;
             pair.bid = 0;
+            pair.status = 'skipped';
+            persistPair(pair);
           }}
           onClose={goHub}
           onExit={goHub}
