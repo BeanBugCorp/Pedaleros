@@ -45,7 +45,6 @@ export default function Hub({ data, onViewGroup, onStartCategory, onEdit }) {
         {/* ---- header ---- */}
         <div className={styles.header}>
           <div>
-            <div className={styles.brand}>FLOÜ</div>
             <h1 className={styles.h1}>{data.name}</h1>
             <div className={styles.sub}>
               {data.club} &nbsp;·&nbsp; {data.dates}
