@@ -233,17 +233,17 @@ function TierRibbon({ tier }) {
    Always mounted so opacity/scaleY can TRANSITION (slow rise-in / slow fade-out). */
 function BottomFire({ active }) {
   const flames = Array.from({ length: 22 }, (_, i) => {
-    const h = 150 + Math.round(150 * Math.abs(Math.sin(i * 1.7 + 1)));
+    const size = 48 + Math.round(52 * Math.abs(Math.sin(i * 1.7 + 1)));
     return (
       <span
         key={i}
         className={styles.flame}
         style={{
-          height: `${h}px`,
+          fontSize: `${size}px`,
           animationDuration: `${0.55 + (i % 5) * 0.12}s`,
           animationDelay: `${(i % 6) * 0.08}s`,
         }}
-      />
+      >🔥</span>
     );
   });
   return (
@@ -337,7 +337,7 @@ function CelebrationOverlay({ tier, amount, a, b, out, fx }) {
             animationDuration: `${2 + (i % 5) * 0.35}s`,
             animationDelay: `${(i % 7) * 0.15}s`,
           }}
-        />
+        >🔥</span>
       ));
   } else {
     msg = 'CONFIRMADO';
