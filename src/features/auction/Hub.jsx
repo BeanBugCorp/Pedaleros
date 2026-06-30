@@ -15,7 +15,7 @@ const EVENT_ID = 'e610f10c-9aad-401f-b5bc-06bce2df9439';
  *  - onStartCategory(category, pairs):         launch the whole category (all groups flattened)
  *  - onEdit(category):                         open organizer edit for a category (optional)
  */
-export default function Hub({ data, onStartGroup, onStartCategory, onEdit }) {
+export default function Hub({ data, onViewGroup, onStartCategory, onEdit }) {
   const [divIdx, setDivIdx] = useState(0);
   const division = data.divisions[divIdx];
 
@@ -24,10 +24,9 @@ export default function Hub({ data, onStartGroup, onStartCategory, onEdit }) {
 
   const money = (n) => '$' + (n || 0).toLocaleString('en-US');
 
-  const groupMeta = (g) => {
-    const done = g.pairs.every((p) => p.bid > 0 || p.omit);
-    return done ? 'LISTO' : `${g.pairs.length} parejas`;
-  };
+  const isGroupDone = (g) => g.pairs.length > 0 && g.pairs.every((p) => p.bid > 0);
+  const isCatDone = (cat) => cat.groups.length > 0 && cat.groups.every(isGroupDone);
+  const groupMeta = (g) => `${g.pairs.length} parejas`;
 
   const startCategory = (cat) => {
     // flatten all groups; tag each pair with its group for the live crumb
@@ -97,7 +96,7 @@ export default function Hub({ data, onStartGroup, onStartCategory, onEdit }) {
               <span className={`${styles.bulb} ${styles.bulbLeft}`} />
               <span className={`${styles.bulb} ${styles.bulbRight}`} />
 
-              <div className={styles.arch}>
+              <div className={`${styles.arch} ${isCatDone(cat) ? styles.archDone : ''}`}>
                 <span className={styles.archText}>{cat.name}</span>
               </div>
 
@@ -106,9 +105,7 @@ export default function Hub({ data, onStartGroup, onStartCategory, onEdit }) {
                   <button
                     key={g.name}
                     className={styles.groupBtn}
-                    onClick={() =>
-                      onStartGroup?.(cat.name, g.name, g.pairs.map((p) => ({ ...p, group: g.name })))
-                    }
+                    onClick={() => onViewGroup?.(cat.name, g)}
                   >
                     <span>{g.name}</span>
                     <span className={styles.groupMeta}>{groupMeta(g)}</span>
@@ -128,7 +125,25 @@ export default function Hub({ data, onStartGroup, onStartCategory, onEdit }) {
           ))}
         </div>
 
-        <div className={styles.footer}>{data.footer}</div>
+        <div className={styles.footer}>
+          © 2026 CALCUTA FLOÜ · PEDALEROS
+          <div className={styles.brand}>
+            <img
+              className={styles.logo}
+              src="/beanbug-logo.png"
+              alt="BeanBug Corp"
+            />
+            <a
+              className={styles.link}
+              href="https://beanbugcorp.com"
+              target="_blank"
+              rel="noreferrer"
+            >
+              beanbugcorp.com
+            </a>
+          </div>
+
+        </div>
       </div>
     </div>
   );

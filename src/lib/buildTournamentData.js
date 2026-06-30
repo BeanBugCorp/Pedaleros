@@ -1,4 +1,4 @@
-import { tournament } from '../features/auction/content';
+import { tournament } from '../data/content';
 
 // Each division in content.js maps to the category gender it holds. Reusing
 // tournament.divisions keeps the same id/name/order the engine (and the gender
