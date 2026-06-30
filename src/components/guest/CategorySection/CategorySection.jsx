@@ -42,7 +42,7 @@ export default function CategorySection({
       </div>
 
       <div className="rows" style={{ marginTop: '14px' }}>
-        {catPairs.slice(0, 3).map((p, i) => (
+        {catPairs.slice(0, 3).map((p, i, arr) => (
           <PairRow
             key={p.id}
             rank={i + 1}
@@ -52,7 +52,7 @@ export default function CategorySection({
             leader={i === 0}
             onClick={() => onOpenModal(p)}
             glowDelay={i * 1.5}
-            glowDuration={7.5}
+            glowDuration={arr.length * 1.5}
           />
         ))}
       </div>
