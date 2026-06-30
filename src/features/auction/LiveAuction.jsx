@@ -124,7 +124,7 @@ export default function LiveAuction({
             PAREJA {pos + 1} / {pairs.length}
           </div>
         </div>
-        <div className={styles.title}>★ CALCUTA · {category} ★</div>
+        <div className={styles.title}>★ CALCUTA ★</div>
         <div className={styles.topRight}>
           <button className={styles.closeBtn} onClick={onClose} aria-label="Cerrar">
             ✕

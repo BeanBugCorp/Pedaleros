@@ -59,8 +59,8 @@
 }
 .topLeft, .topRight { min-width: 200px; }
 .topRight { display: flex; justify-content: flex-end; }
-.crumb { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 2px; color: #e9c24c; }
-.crumbDim { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; color: #b78a5a; margin-top: 3px; }
+.crumb { font-family: 'Space Mono', monospace; font-size: 20px; letter-spacing: 2px; color: #e9c24c; }
+.crumbDim { font-family: 'Space Mono', monospace; font-size: 16px; letter-spacing: 2px; color: #b78a5a; margin-top: 3px; }
 .title { font-family: 'Rye', serif; font-size: 22px; letter-spacing: 1px; color: #ffe7a3; text-shadow: 0 0 14px rgba(255, 210, 80, .55); }
 .closeBtn {
   width: 42px; height: 42px; border-radius: 50%;
