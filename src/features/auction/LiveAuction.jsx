@@ -144,8 +144,6 @@ export default function LiveAuction({
           <span className={`${styles.bulb} ${styles.bulbRight}`} />
 
           <div className={styles.row}>
-            <PlayerPhoto name={pair.a} photo={pair.photoA} />
-
             <div className={styles.center}>
               <div className={styles.kicker}>PAREJA</div>
               <div className={styles.name}>{pair.a}</div>
@@ -161,8 +159,6 @@ export default function LiveAuction({
                 </div>
               </div>
             </div>
-
-            <PlayerPhoto name={pair.b} photo={pair.photoB} />
           </div>
         </div>
       </div>
@@ -222,22 +218,6 @@ export default function LiveAuction({
 }
 
 /* ============================ sub-components ============================ */
-
-function PlayerPhoto({ name, photo }) {
-  return (
-    <div className={styles.photo}>
-      {photo ? (
-        <img className={styles.photoImg} src={photo} alt={name} />
-      ) : (
-        <div className={styles.silhouette}>
-          <div className={styles.head} />
-          <div className={styles.shoulders} />
-        </div>
-      )}
-      <div className={styles.photoCaption}>{name}</div>
-    </div>
-  );
-}
 
 function TierRibbon({ tier }) {
   if (tier === 1)
