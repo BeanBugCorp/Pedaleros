@@ -65,7 +65,7 @@
 .headingLabel { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 3px; color: #b78a5a; margin-bottom: 10px; }
 
 /* cards */
-.cards { display: flex; gap: 28px; flex-wrap: wrap; }
+.cards { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; }
 .card {
   position: relative; width: 286px; border-radius: 20px; padding: 16px 18px 18px;
   background: linear-gradient(180deg, #42121f, #260b13); border: 2px solid #7a2230;
