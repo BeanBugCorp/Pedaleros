@@ -26,7 +26,7 @@ export default function LiveAuction({
   pairs = [],
   category = '',
   group = '',
-  thresholds = { spark: 1000, fire: 5000, jackpot: 10000 },
+  thresholds = { spark: 200, fire: 2500, jackpot: 5000 },
   intensityFx = true,
   onConfirm,
   onOmit,
