@@ -15,8 +15,9 @@ const EVENT_ID = 'e610f10c-9aad-401f-b5bc-06bce2df9439';
  *  - onStartCategory(category, pairs):         launch the whole category (all groups flattened)
  *  - onEdit(category):                         open organizer edit for a category (optional)
  */
-export default function Hub({ data, onViewGroup, onStartCategory, onEdit }) {
+export default function Hub({ data, onStartCategory, onEdit }) {
   const [divIdx, setDivIdx] = useState(0);
+  const [activeGroup, setActiveGroup] = useState(null); // { catName, group }
   const division = data.divisions[divIdx];
 
   // pot / max / count for the event, from the DB sales summary
@@ -104,7 +105,7 @@ export default function Hub({ data, onViewGroup, onStartCategory, onEdit }) {
                   <button
                     key={g.name}
                     className={styles.groupBtn}
-                    onClick={() => onViewGroup?.(cat.name, g)}
+                    onClick={() => setActiveGroup({ catName: cat.name, group: g })}
                   >
                     <span>{g.name}</span>
                     <span className={styles.groupMeta}>{groupMeta(g)}</span>
@@ -123,6 +124,52 @@ export default function Hub({ data, onViewGroup, onStartCategory, onEdit }) {
             </div>
           ))}
         </div>
+
+        {/* ---- group modal ---- */}
+        {activeGroup && (
+          <div className={styles.modalOverlay} onClick={() => setActiveGroup(null)}>
+            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+              <span className={`${styles.bulb} ${styles.bulbTop}`} />
+              <span className={`${styles.bulb} ${styles.bulbBottom}`} />
+              <span className={`${styles.bulb} ${styles.bulbLeft}`} />
+              <span className={`${styles.bulb} ${styles.bulbRight}`} />
+
+              <div className={styles.modalHeader}>
+                <div>
+                  <h2 className={styles.modalH2}>{activeGroup.group.name}</h2>
+                  <div className={styles.modalCatLabel}>{activeGroup.catName}</div>
+                </div>
+                <button className={styles.modalClose} onClick={() => setActiveGroup(null)}>
+                  ‹ VOLVER
+                </button>
+              </div>
+
+              <div className={styles.modalGroupCard}>
+                {activeGroup.group.pairs.map((pair, i) => (
+                  <div
+                    key={i}
+                    className={`${styles.pairRow} ${pair.omit ? styles.pairOmit : ''}`}
+                  >
+                    <span className={styles.nameCol}>{pair.a}</span>
+                    <span className={styles.slash}>/</span>
+                    <span className={styles.nameCol}>{pair.b}</span>
+
+                    {pair.omit ? (
+                      <span className={styles.omitBadge}>OMITIDA</span>
+                    ) : pair.bid > 0 ? (
+                      <div className={styles.bidDisplay}>
+                        <span className={styles.bidPrefix}>$</span>
+                        <span className={styles.bidValue}>
+                          {Number(pair.bid).toLocaleString('en-US')}
+                        </span>
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className={styles.footer}>
           © 2026 CALCUTA FLOÜ · PEDALEROS

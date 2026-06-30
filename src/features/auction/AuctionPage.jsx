@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Hub from './Hub';
 import LiveAuction from './LiveAuction';
 import Edit from './Edit';
-import GroupView from './GroupView';
 import { thresholds } from '../../data/content';
 import { useAuctionData, useEditPair } from '../../hooks/useAuctionData';
 import { toEditPairInput } from '../../lib/buildTournamentData';
@@ -48,19 +47,10 @@ export default function AuctionPage() {
       {view.screen === 'hub' && (
         <Hub
           data={data}
-          onViewGroup={(catName, group) => setView({ screen: 'group', catName, group })}
           onStartCategory={(category, pairs) =>
             setView({ screen: 'live', category, group: '', pairs })
           }
           onEdit={openEdit}
-        />
-      )}
-
-      {view.screen === 'group' && (
-        <GroupView
-          categoryName={view.catName}
-          group={view.group}
-          onBack={goHub}
         />
       )}
 
