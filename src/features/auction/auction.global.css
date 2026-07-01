@@ -37,6 +37,67 @@
   50%      { box-shadow: 0 0 0 3px #ff4d6d, 0 0 46px 12px rgba(255, 77, 109, .6); }
 }
 
+/* ---- REMATE DE ORO (tier 4) ---- */
+@keyframes launchLeft {
+  0%   { transform: translate(0, 0) rotate(0); opacity: 0; }
+  8%   { opacity: 1; }
+  100% { transform: translate(78vw, 42vh) rotate(560deg); opacity: 0; }
+}
+@keyframes launchRight {
+  0%   { transform: translate(0, 0) rotate(0); opacity: 0; }
+  8%   { opacity: 1; }
+  100% { transform: translate(-78vw, 42vh) rotate(-560deg); opacity: 0; }
+}
+@keyframes emojiBoom {
+  0%   { transform: translate(-50%, -50%) scale(.2) rotate(0); opacity: 0; }
+  12%  { opacity: 1; transform: translate(-50%, -50%) scale(1.35) rotate(8deg); }
+  100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.05) rotate(var(--rot)); opacity: 0; }
+}
+@keyframes megaTextThrob {
+  0%, 100% { transform: scale(1);     text-shadow: 0 0 24px rgba(255, 210, 80, .85), 0 4px 0 #7a1226; }
+  50%      { transform: scale(1.05);  text-shadow: 0 0 44px rgba(255, 77, 109, 1), 0 4px 0 #7a1226; }
+}
+
+/* ---- GRAND SLAM (tier 5) ---- */
+@keyframes shockwave {
+  0%   { transform: translate(-50%, -50%) scale(.05); opacity: .9; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+@keyframes screenFlash {
+  0%   { opacity: 0; }
+  6%   { opacity: .92; }
+  100% { opacity: 0; }
+}
+@keyframes beamSweepL { 0% { transform: rotate(-24deg); } 100% { transform: rotate(10deg); } }
+@keyframes beamSweepR { 0% { transform: rotate(24deg); }  100% { transform: rotate(-10deg); } }
+@keyframes cannonLeft {
+  0%   { transform: translate(0, 0) rotate(0); opacity: 0; }
+  6%   { opacity: 1; }
+  55%  { opacity: 1; }
+  100% { transform: translate(64vw, -8vh) rotate(560deg); opacity: 0; }
+}
+@keyframes cannonRight {
+  0%   { transform: translate(0, 0) rotate(0); opacity: 0; }
+  6%   { opacity: 1; }
+  55%  { opacity: 1; }
+  100% { transform: translate(-64vw, -8vh) rotate(-560deg); opacity: 0; }
+}
+@keyframes trophyRise {
+  0%   { transform: translateY(90px) scale(.4); opacity: 0; }
+  55%  { transform: translateY(-10px) scale(1.12); }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes crownFall {
+  0%   { transform: translateY(-60px) rotate(-12deg); opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translateY(680px) rotate(200deg); opacity: 0; }
+}
+@keyframes vignettePulse { 0%, 100% { opacity: .35; } 50% { opacity: .7; } }
+@keyframes slamThrob {
+  0%, 100% { transform: scale(1);    text-shadow: 0 0 30px rgba(255, 210, 80, .9), 0 5px 0 #7a1226; }
+  50%      { transform: scale(1.06); text-shadow: 0 0 60px rgba(255, 77, 109, 1), 0 0 90px rgba(255, 210, 80, .7), 0 5px 0 #7a1226; }
+}
+
 /* ---- Accessibility: respect reduced-motion -------------------------------
    Kills the continuous loops (bulbs, fire flicker/pulse, glow, rain) and the
    one-shot pops, but state changes (tier swaps, celebration, advance) remain

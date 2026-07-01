@@ -13,7 +13,7 @@ export const tournament = {
 }
 
 /* Auction tiers (MXN). Tweakable per tournament. */
-export const thresholds = { spark: 500, fire: 2500, jackpot: 5000 }
+export const thresholds = { spark: 500, fire: 2500, jackpot: 5000, mega: 10000, slam: 15000 }
 
 export const categories = ['Open', 'Femenil A', 'Varonil B']
 
