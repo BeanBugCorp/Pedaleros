@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import styles from './LiveAuction.module.css';
-import './auction.global.css'; // keyframes (global, bundled — CSP-safe)
+import '../../../pages/auction/auction.global.css'; // keyframes (global, bundled — CSP-safe)
 
 /**
  * LiveAuction — Marquee variant. CSP-clean:

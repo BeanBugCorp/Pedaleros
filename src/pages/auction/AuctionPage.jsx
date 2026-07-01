@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import Hub from './Hub';
-import LiveAuction from './LiveAuction';
-import Edit from './Edit';
+import Hub from '../../components/auction/Hub/Hub';
+import LiveAuction from '../../components/auction/LiveAuction/LiveAuction';
+import Edit from '../../components/auction/Edit/Edit';
 import { thresholds } from '../../data/content';
 import { useAuctionData, useEditPair } from '../../hooks/useAuctionData';
 import { toEditPairInput } from '../../lib/buildTournamentData';

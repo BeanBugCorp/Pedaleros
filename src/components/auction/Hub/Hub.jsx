@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './Hub.module.css';
-import { useEventSalesSummary } from '../../hooks/useGuestData';
+import { useEventSalesSummary } from '../../../hooks/useGuestData';
 
 // TODO: source this from routing/props once events are selectable.
 const EVENT_ID = 'e610f10c-9aad-401f-b5bc-06bce2df9439';
