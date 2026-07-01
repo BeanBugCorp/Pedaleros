@@ -1,11 +1,11 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import styles from './LiveAuction.module.css';
-import '../../../pages/auction/auction.global.css'; // keyframes (global, bundled — CSP-safe)
 
 /**
  * LiveAuction — Marquee variant. CSP-clean:
- *  - All STATIC styling lives in LiveAuction.module.css (CSS Modules → external bundle).
- *  - All @keyframes live in auction.global.css (external bundle).
+ *  - All styling (including @keyframes) lives in LiveAuction.module.css
+ *    (CSS Modules → external bundle). The reduced-motion switch is global,
+ *    imported once by the parent AuctionPage (pages/auction/auction.global.css).
  *  - The handful of inline `style={}` props below are DYNAMIC values only
  *    (fire opacity/transform during a transition, per-particle position/delay).
  *    React applies them via the CSSOM (element.style.x = …), which is NOT governed
