@@ -15,7 +15,7 @@ import './auction.global.css'; // keyframes (global, bundled — CSP-safe)
  *  - pairs:      [{ a, b, bid }]  the auction queue for this group/category
  *  - category:   string           e.g. "Open"
  *  - group:      string           e.g. "Grupo 2"
- *  - thresholds: { spark, fire, jackpot }   default 1000 / 5000 / 10000
+ *  - thresholds: { spark, fire, jackpot, mega, slam }   default 1000 / 5000 / 10000 / 10000 / 15000
  *  - intensityFx: boolean         master toggle for fire/particles (default true)
  *  - onConfirm(pair, amount):     called when a bid is confirmed
  *  - onOmit(pair):                called when a pair is omitted
@@ -26,7 +26,7 @@ export default function LiveAuction({
   pairs = [],
   category = '',
   group = '',
-  thresholds = { spark: 200, fire: 2500, jackpot: 5000 },
+  thresholds = { spark: 200, fire: 2500, jackpot: 5000, mega: 10000, slam: 15000 },
   intensityFx = true,
   onConfirm,
   onOmit,
@@ -46,6 +46,8 @@ export default function LiveAuction({
   const value = parseInt(bidDigits || '0', 10);
 
   const tier = useMemo(() => {
+    if (value >= thresholds.slam) return 5;
+    if (value >= thresholds.mega) return 4;
     if (value >= thresholds.jackpot) return 3;
     if (value >= thresholds.fire) return 2;
     if (value >= thresholds.spark) return 1;
@@ -134,8 +136,15 @@ export default function LiveAuction({
 
       {/* ---------- STAGE ---------- */}
       <div className={styles.stageArea}>
-        {/* jackpot ambient rain while typing */}
-        {intensityFx && tier >= 3 && <JackpotRain />}
+        {/* ambient FX while typing — highest active tier wins, fire (tier >= 2) stays underneath */}
+        {intensityFx && tier === 5 && (
+          <>
+            <SlamWash />
+            <SlamRain />
+          </>
+        )}
+        {intensityFx && tier === 4 && <MegaRain />}
+        {intensityFx && tier === 3 && <JackpotRain />}
 
         <div className={styles.panel}>
           <span className={`${styles.bulb} ${styles.bulbTop}`} />
@@ -226,6 +235,10 @@ function TierRibbon({ tier }) {
     return <div className={`${styles.ribbon} ${styles.ribbonFire}`}>🔥 ON FIRE 🔥</div>;
   if (tier === 3)
     return <div className={`${styles.ribbon} ${styles.ribbonJackpot}`}>JACKPOT</div>;
+  if (tier === 4)
+    return <div className={`${styles.ribbon} ${styles.ribbonMega}`}>💥 REMATE DE ORO 💥</div>;
+  if (tier === 5)
+    return <div className={`${styles.ribbon} ${styles.ribbonSlam}`}>🏆 GRAND SLAM 🏆</div>;
   return <div className={styles.ribbonSpacer} />;
 }
 
@@ -291,10 +304,191 @@ function JackpotRain() {
   return <div className={styles.fxLayer}>{[...coins, ...conf]}</div>;
 }
 
-function CelebrationOverlay({ tier, amount, a, b, out, fx }) {
-  let msg, msgClass, parts = null;
+const PADEL_EMOJIS = ['🎾', '🏓', '🏆', '⚡', '🔥', '🥇', '💪'];
+const ROYALTY_EMOJIS = ['🏆', '👑', '🎾', '🥇', '💛', '⭐', '🔥'];
 
-  if (tier >= 3) {
+function MegaRain() {
+  const fall = Array.from({ length: 20 }, (_, i) => (
+    <span
+      key={`mf${i}`}
+      className={styles.megaFall}
+      style={{
+        left: `${2 + i * 4.9}%`,
+        fontSize: `${26 + (i % 5) * 6}px`,
+        animationDuration: `${2.3 + (i % 6) * 0.32}s`,
+        animationDelay: `${(i % 9) * 0.12}s`,
+      }}
+    >
+      {PADEL_EMOJIS[i % PADEL_EMOJIS.length]}
+    </span>
+  ));
+  const launchL = Array.from({ length: 9 }, (_, i) => (
+    <span
+      key={`ml${i}`}
+      className={styles.megaLaunchLeft}
+      style={{
+        top: `${18 + i * 8}%`,
+        fontSize: `${28 + (i % 3) * 8}px`,
+        animationDuration: `${1.7 + (i % 4) * 0.3}s`,
+        animationDelay: `${(i % 5) * 0.22}s`,
+      }}
+    >
+      {PADEL_EMOJIS[i % PADEL_EMOJIS.length]}
+    </span>
+  ));
+  const launchR = Array.from({ length: 9 }, (_, i) => (
+    <span
+      key={`mr${i}`}
+      className={styles.megaLaunchRight}
+      style={{
+        top: `${18 + i * 8}%`,
+        fontSize: `${28 + (i % 3) * 8}px`,
+        animationDuration: `${1.7 + (i % 4) * 0.3}s`,
+        animationDelay: `${(i % 5) * 0.22}s`,
+      }}
+    >
+      {PADEL_EMOJIS[i % PADEL_EMOJIS.length]}
+    </span>
+  ));
+  return <div className={styles.fxLayer}>{[...fall, ...launchL, ...launchR]}</div>;
+}
+
+/* stadium wash — behind the marquee panel (low z-index) */
+function SlamWash() {
+  return (
+    <div className={styles.slamWash}>
+      <div className={styles.slamVignette} />
+      <div className={`${styles.slamBeam} ${styles.slamBeamL}`} />
+      <div className={`${styles.slamBeam} ${styles.slamBeamR}`} />
+    </div>
+  );
+}
+
+/* royalty rain — above everything, like the other typing-FX layers */
+function SlamRain() {
+  const drops = Array.from({ length: 24 }, (_, i) => (
+    <span
+      key={`sr${i}`}
+      className={styles.slamFall}
+      style={{
+        left: `${1 + i * 4.1}%`,
+        fontSize: `${30 + (i % 6) * 5}px`,
+        animationDuration: `${2.1 + (i % 6) * 0.3}s`,
+        animationDelay: `${(i % 10) * 0.11}s`,
+      }}
+    >
+      {ROYALTY_EMOJIS[i % ROYALTY_EMOJIS.length]}
+    </span>
+  ));
+  return <div className={styles.fxLayer}>{drops}</div>;
+}
+
+function radialBoom(i, n) {
+  const ang = (i / n) * Math.PI * 2 + (i % 2 ? 0.13 : 0);
+  const dist = 240 + ((i * 97) % 240);
+  return {
+    tx: Math.cos(ang) * dist,
+    ty: Math.sin(ang) * dist - 40,
+    rot: ((i * 73) % 720 - 360) + 'deg',
+  };
+}
+
+function CelebrationOverlay({ tier, amount, a, b, out, fx }) {
+  let msg, msgClass, parts = null, particlesBg = null, trophy = null, subtitle = null;
+
+  if (tier >= 5) {
+    msg = '🏆 GRAND SLAM 🏆';
+    msgClass = styles.msgSlam;
+    trophy = <div className={styles.slamTrophy}>🏆</div>;
+    subtitle = <div className={styles.slamSubtitle}>¡ESTRELLAS!</div>;
+    if (fx) {
+      particlesBg = (
+        <>
+          <div className={styles.slamFlash} />
+          {Array.from({ length: 4 }, (_, i) => (
+            <div
+              key={`ring${i}`}
+              className={styles.slamRing}
+              style={{
+                animationDuration: `${1.5 + i * 0.25}s`,
+                animationDelay: `${i * 0.28}s`,
+              }}
+            />
+          ))}
+        </>
+      );
+      const cannonEmojis = ['c1', 'c2', 'c3', 'c4', 'c5'];
+      const cannonsL = Array.from({ length: 26 }, (_, i) => (
+        <span
+          key={`cl${i}`}
+          className={`${styles.cannonPiece} ${styles.cannonPieceL} ${styles['cannon_' + cannonEmojis[i % 5]]}`}
+          style={{
+            animationDuration: `${1.6 + (i % 6) * 0.25}s`,
+            animationDelay: `${(i % 8) * 0.09}s`,
+          }}
+        />
+      ));
+      const cannonsR = Array.from({ length: 26 }, (_, i) => (
+        <span
+          key={`cr${i}`}
+          className={`${styles.cannonPiece} ${styles.cannonPieceR} ${styles['cannon_' + cannonEmojis[i % 5]]}`}
+          style={{
+            animationDuration: `${1.6 + (i % 6) * 0.25}s`,
+            animationDelay: `${(i % 8) * 0.09}s`,
+          }}
+        />
+      ));
+      const slamEmojis = ['🏆', '👑', '🥇', '💰', '💎', '🎾'];
+      const N = 40;
+      const explosion = Array.from({ length: N }, (_, i) => {
+        const { tx, ty, rot } = radialBoom(i, N);
+        return (
+          <span
+            key={`se${i}`}
+            className={styles.boomPiece}
+            style={{
+              top: '46%',
+              fontSize: `${30 + (i % 5) * 12}px`,
+              '--tx': `${tx}px`,
+              '--ty': `${ty}px`,
+              '--rot': rot,
+              animationDuration: `${1.5 + (i % 5) * 0.22}s`,
+              animationDelay: `${(i % 6) * 0.05}s`,
+            }}
+          >
+            {slamEmojis[i % slamEmojis.length]}
+          </span>
+        );
+      });
+      parts = [...cannonsL, ...cannonsR, ...explosion];
+    }
+  } else if (tier === 4) {
+    msg = '💥 REMATE DE ORO 💥';
+    msgClass = styles.msgMega;
+    if (fx) {
+      const megaEmojis = ['💰', '💵', '💸', '🤑', '🪙', '💎', '🏆'];
+      const N = 46;
+      parts = Array.from({ length: N }, (_, i) => {
+        const { tx, ty, rot } = radialBoom(i, N);
+        return (
+          <span
+            key={`me${i}`}
+            className={styles.boomPiece}
+            style={{
+              fontSize: `${30 + (i % 5) * 12}px`,
+              '--tx': `${tx}px`,
+              '--ty': `${ty}px`,
+              '--rot': rot,
+              animationDuration: `${1.5 + (i % 5) * 0.22}s`,
+              animationDelay: `${(i % 6) * 0.05}s`,
+            }}
+          >
+            {megaEmojis[i % megaEmojis.length]}
+          </span>
+        );
+      });
+    }
+  } else if (tier >= 3) {
     msg = '¡JACKPOT!';
     msgClass = styles.msgJackpot;
     if (fx) {
@@ -361,9 +555,12 @@ function CelebrationOverlay({ tier, amount, a, b, out, fx }) {
       className={styles.overlay}
       style={{ opacity: out ? 0 : 1, pointerEvents: out ? 'none' : 'auto' }}
     >
+      {particlesBg}
       <div className={styles.fxLayer}>{parts}</div>
       <div className={styles.message}>
+        {trophy}
         <div className={`${styles.bigMsg} ${msgClass}`}>{msg}</div>
+        {subtitle}
         <div className={styles.msgAmount}>$ {amount}</div>
         <div className={styles.msgPair}>
           {a} / {b}
