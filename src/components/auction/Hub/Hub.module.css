@@ -1,8 +1,8 @@
 /* ===========================================================================
    Hub.module.css — Categories / starting page (CSP-clean static styling)
-   Keyframes (bulbPulse, bulbPulse2, glowBreathe) are global — see notes.
-   glowBreathe is added here in case it's not already global; if you import
-   auction.global.css app-wide, move this @keyframes there to avoid duplication.
+   @keyframes are declared locally so CSS Modules scopes both the definition
+   and the animation-name references with the same hash — they must match.
+   The reduced-motion switch is global (see pages/auction/auction.global.css).
    =========================================================================== */
 
 @keyframes bulbPulse   { 0%, 100% { opacity: 1; }   50% { opacity: .4; } }
