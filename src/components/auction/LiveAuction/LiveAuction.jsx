@@ -15,6 +15,8 @@ import styles from './LiveAuction.module.css';
  *  - pairs:      [{ a, b, bid }]  the auction queue for this group/category
  *  - category:   string           e.g. "Open"
  *  - group:      string           e.g. "Grupo 2"
+ *  - startAt:    number           index to resume at (default 0), e.g. the first
+ *                                 unresolved pair when re-entering a category mid-auction
  *  - thresholds: { spark, fire, jackpot, mega, slam }   default 1000 / 5000 / 10000 / 10000 / 15000
  *  - intensityFx: boolean         master toggle for fire/particles (default true)
  *  - onConfirm(pair, amount):     called when a bid is confirmed
@@ -26,6 +28,7 @@ export default function LiveAuction({
   pairs = [],
   category = '',
   group = '',
+  startAt = 0,
   thresholds = { spark: 200, fire: 2500, jackpot: 5000, mega: 10000, slam: 15000 },
   intensityFx = true,
   onConfirm,
@@ -33,9 +36,9 @@ export default function LiveAuction({
   onClose,
   onExit,
 }) {
-  const [pos, setPos] = useState(0);
+  const [pos, setPos] = useState(startAt);
   const [bidDigits, setBidDigits] = useState(() =>
-    pairs[0]?.bid ? String(pairs[0].bid) : ''
+    pairs[startAt]?.bid ? String(pairs[startAt].bid) : ''
   );
   const [celebrating, setCelebrating] = useState(false);
   const [celebrateTier, setCelebrateTier] = useState(0);

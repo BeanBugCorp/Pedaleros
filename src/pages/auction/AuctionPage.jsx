@@ -47,8 +47,8 @@ export default function AuctionPage() {
       {view.screen === 'hub' && (
         <Hub
           data={data}
-          onStartCategory={(category, pairs) =>
-            setView({ screen: 'live', category, group: '', pairs })
+          onStartCategory={(category, pairs, startAt) =>
+            setView({ screen: 'live', category, group: '', pairs, startAt })
           }
           onEdit={openEdit}
         />
@@ -68,6 +68,7 @@ export default function AuctionPage() {
           pairs={view.pairs}
           category={view.category}
           group={view.group}
+          startAt={view.startAt}
           thresholds={thresholds}
           intensityFx={true}
           onConfirm={(pair, amount) => {
