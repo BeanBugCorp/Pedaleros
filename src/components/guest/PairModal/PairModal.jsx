@@ -3,8 +3,7 @@ import './PairModal.css'
 
 export default function PairModal({ pair, onClose, onBack }) {
   const [p1, p2] = pair.players
-  // TODO: replace with Supabase query for actual buyer name
-  const buyer = 'Comprador Ejemplo'
+  const buyer = pair.buyer
 
   return (
     <div className="pair-modal-overlay" onClick={onClose}>
@@ -36,10 +35,12 @@ export default function PairModal({ pair, onClose, onBack }) {
             <div className="pair-modal-name">{p2}</div>
           </div>
         </div>
-        <div className="pair-buyer-bubble">
-          <span className="pair-buyer-label">Comprador:</span>
-          <span className="pair-buyer-name">{buyer}</span>
-        </div>
+        {buyer && (
+          <div className="pair-buyer-bubble">
+            <span className="pair-buyer-label">Comprador:</span>
+            <span className="pair-buyer-name">{buyer}</span>
+          </div>
+        )}
         <div className="pair-amount-pill">
           <svg
             viewBox="0 0 300 64"
