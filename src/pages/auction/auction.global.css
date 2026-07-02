@@ -1,0 +1,21 @@
+/* ===========================================================================
+   auction.global.css — reduced-motion switch for the auction feature.
+   Import ONCE (AuctionPage.jsx). Every screen's own @keyframes live locally
+   in its CSS Module (CSS Modules scope+hash both the definition and the
+   animation-name reference together, so they must stay in the same file —
+   see Hub.module.css / LiveAuction.module.css). This file only needs the
+   universal `*` reduced-motion override, since that selector isn't tied to
+   any particular scoped keyframe name.
+   =========================================================================== */
+
+/* Kills the continuous loops (bulbs, fire flicker/pulse, glow, rain) and the
+   one-shot pops, but state changes (tier swaps, celebration, advance) remain
+   instant so the auction is still fully usable. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
