@@ -99,9 +99,12 @@ export default function LiveAuction({
     }
   };
 
-  const omit = () => {
+  const omit = async () => {
     clearTimeout(advanceTimer.current);
-    if (pair) onOmit?.(pair);
+    // await the persist before advancing — omitting the last pair in a category
+    // advances straight to onExit, and we don't want that to beat the DB write
+    // back to the Hub (which reloads on exit to recompute the disabled state)
+    if (pair) await onOmit?.(pair);
     advance();
   };
 
