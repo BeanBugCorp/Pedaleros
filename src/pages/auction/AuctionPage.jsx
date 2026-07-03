@@ -29,6 +29,12 @@ export default function AuctionPage() {
     setView({ screen: 'hub' });
   };
 
+  // Closing the live auction returns to the Hub with fresh DB data.
+  const closeLive = () => {
+    reload();
+    goHub();
+  };
+
   // Persists a pair via edit_pair (maps the engine pair to the function input).
   const persistPair = (pair) => editPair(toEditPairInput(pair));
 
@@ -76,10 +82,11 @@ export default function AuctionPage() {
           startAt={view.startAt}
           thresholds={thresholds}
           intensityFx={true}
-          onConfirm={(pair, amount) => {
+          onConfirm={(pair, amount, buyer) => {
             pair.bid = amount;
             pair.omit = false;
             pair.status = 'sold';
+            pair.buyer = buyer;
             persistPair(pair);
           }}
           onOmit={async (pair) => {
@@ -88,8 +95,8 @@ export default function AuctionPage() {
             pair.status = 'skipped';
             await persistPair(pair);
           }}
-          onClose={goHub}
-          onExit={goHub}
+          onClose={closeLive}
+          onExit={closeLive}
         />
       )}
     </>

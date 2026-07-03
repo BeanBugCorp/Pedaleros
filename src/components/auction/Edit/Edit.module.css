@@ -47,6 +47,14 @@
 .nameInput:focus { border-color: #c89a44; }
 .slash { color: #b78a5a; font-family: 'Space Mono', monospace; }
 
+.buyerInput {
+  flex: 1; min-width: 120px; padding: 10px 12px; border-radius: 8px;
+  border: 1.5px solid #5a2230; background: rgba(18, 8, 12, .7);
+  color: #f4ece0; font-size: 14px; font-weight: 500; outline: none;
+}
+.buyerInput:focus { border-color: #c89a44; }
+.buyerInput::placeholder { color: #8a6a55; }
+
 .bidWrap {
   display: flex; align-items: center; gap: 6px; padding: 0 12px;
   background: rgba(18, 8, 12, .7); border: 1.5px solid #c89a44; border-radius: 8px;

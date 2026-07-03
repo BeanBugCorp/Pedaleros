@@ -19,6 +19,7 @@ function toAuctionPair(p, groupName) {
     categoria: p.categoria,
     teamName: p.teamName ?? null,
     status: p.status ?? null,
+    buyer: p.buyer ?? null,
     groupLabel: groupName,
   };
 }
@@ -35,6 +36,7 @@ export function toEditPairInput(pair) {
     groupLabel: pair.groupLabel ?? pair.group ?? null,
     status: pair.status ?? null,
     saleAmount: pair.bid || 0,
+    buyer: pair.buyer ?? null,
     group: pair.group ?? pair.groupLabel ?? null,
   };
 }

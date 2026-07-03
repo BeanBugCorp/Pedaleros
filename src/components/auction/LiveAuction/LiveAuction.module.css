@@ -242,6 +242,16 @@
   color: #ffd66a; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 22px; outline: none;
 }
 .input::placeholder { color: #8a6a55; }
+.buyerWrap {
+  display: flex; align-items: center;
+  background: rgba(18, 8, 12, .7); border: 1.5px solid #5a2230; border-radius: 12px;
+  padding: 0 16px;
+}
+.buyerInput {
+  width: 200px; padding: 13px 4px; border: none; background: transparent;
+  color: #f4ece0; font-family: 'Space Mono', monospace; font-weight: 700; font-size: 18px; outline: none;
+}
+.buyerInput::placeholder { color: #8a6a55; }
 .chips { display: flex; gap: 7px; }
 .chip {
   padding: 11px 12px; border-radius: 10px;
@@ -334,6 +344,7 @@
 .slamTrophy { font-size: 96px; line-height: 1; animation: trophyRise .9s cubic-bezier(.22, 1, .36, 1) both; }
 .slamSubtitle { font-family: 'Rye', serif; font-size: 30px; color: #fff; text-shadow: 0 0 20px rgba(255, 210, 80, .7); margin-top: 4px; }
 .msgPair { font-size: 19px; color: #ffd9a0; margin-top: 6px; letter-spacing: 2px; }
+.msgBuyer { font-size: 15px; color: #e9c24c; margin-top: 8px; letter-spacing: 1px; font-weight: 700; }
 
 /* falling pieces inside the celebration */
 .fallBall {
