@@ -35,6 +35,10 @@ export default function Edit({ category, onBack, onSavePair, onChange }) {
     pair.bid = parseInt((value || '').replace(/[^0-9]/g, '') || '0', 10);
     rerender(pair);
   };
+  const setBuyer = (pair, value) => {
+    pair.buyer = value;
+    rerender(pair);
+  };
 
   const savePair = async (pair) => {
     setSavingId(pair.id);
@@ -51,9 +55,10 @@ export default function Edit({ category, onBack, onSavePair, onChange }) {
     }
   };
 
-  // Clears the amount, sets status to pending, and persists immediately.
+  // Clears the amount and buyer, sets status to pending, and persists immediately.
   const clearPair = (pair) => {
     pair.bid = 0;
+    pair.buyer = null;
     pair.status = 'pending';
     rerender(pair);
     savePair(pair);
@@ -102,6 +107,14 @@ export default function Edit({ category, onBack, onSavePair, onChange }) {
                     aria-label="Apuesta"
                   />
                 </div>
+
+                <input
+                  className={styles.buyerInput}
+                  value={pair.buyer ?? ''}
+                  onChange={(e) => setBuyer(pair, e.target.value)}
+                  placeholder="Comprador"
+                  aria-label="Comprador"
+                />
 
                 <button
                   className={styles.omitOn}

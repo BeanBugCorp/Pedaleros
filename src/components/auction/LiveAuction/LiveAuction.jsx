@@ -40,6 +40,7 @@ export default function LiveAuction({
   const [bidDigits, setBidDigits] = useState(() =>
     pairs[startAt]?.bid ? String(pairs[startAt].bid) : ''
   );
+  const [buyerName, setBuyerName] = useState(() => pairs[0]?.buyer ?? '');
   const [celebrating, setCelebrating] = useState(false);
   const [celebrateTier, setCelebrateTier] = useState(0);
   const [celebrateOut, setCelebrateOut] = useState(false);
@@ -78,11 +79,12 @@ export default function LiveAuction({
     }
     setPos(np);
     setBidDigits(pairs[np]?.bid ? String(pairs[np].bid) : '');
+    setBuyerName(pairs[np]?.buyer ?? '');
   }, [pos, pairs, onExit]);
 
   const confirmBid = () => {
     if (!pair) return;
-    onConfirm?.(pair, value);
+    onConfirm?.(pair, value, buyerName.trim() || null);
     clearTimeout(advanceTimer.current);
     setCelebrateTier(tier);
     setCelebrateOut(false);
@@ -114,6 +116,7 @@ export default function LiveAuction({
     const np = pos - 1;
     setPos(np);
     setBidDigits(pairs[np]?.bid ? String(pairs[np].bid) : '');
+    setBuyerName(pairs[np]?.buyer ?? '');
     setCelebrating(false);
     setCelebrateOut(false);
   };
@@ -198,6 +201,16 @@ export default function LiveAuction({
           />
         </div>
 
+        <div className={styles.buyerWrap}>
+          <input
+            className={styles.buyerInput}
+            value={buyerName}
+            onChange={(e) => setBuyerName(e.target.value)}
+            placeholder="Comprador"
+            aria-label="Comprador"
+          />
+        </div>
+
         <div className={styles.chips}>
           <button className={styles.chip} onClick={() => addBid(500)}>+500</button>
           <button className={styles.chip} onClick={() => addBid(1000)}>+1K</button>
@@ -218,6 +231,7 @@ export default function LiveAuction({
             amount={bidFmt}
             a={pair.a}
             b={pair.b}
+            buyer={buyerName.trim()}
             out={celebrateOut}
             fx={intensityFx}
           />
@@ -399,7 +413,7 @@ function radialBoom(i, n) {
   };
 }
 
-function CelebrationOverlay({ tier, amount, a, b, out, fx }) {
+function CelebrationOverlay({ tier, amount, a, b, buyer, out, fx }) {
   let msg, msgClass, parts = null, particlesBg = null, trophy = null, subtitle = null;
 
   if (tier >= 5) {
@@ -571,6 +585,7 @@ function CelebrationOverlay({ tier, amount, a, b, out, fx }) {
         <div className={styles.msgPair}>
           {a} / {b}
         </div>
+        {buyer && <div className={styles.msgBuyer}>Comprador: {buyer}</div>}
       </div>
     </div>
   );

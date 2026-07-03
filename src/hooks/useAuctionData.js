@@ -59,6 +59,7 @@ export function useEditPair() {
         p_group_label: pair.groupLabel ?? null,
         p_status: pair.status ?? null,
         p_sale_amount: pair.saleAmount ?? null,
+        p_buyer: pair.buyer ?? null,
         p_group: pair.group ?? null,
       })
       if (rpcError) throw rpcError

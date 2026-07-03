@@ -55,6 +55,7 @@ function toUiPair(row) {
     amount: row.amount,
     players: [row.player1, row.player2],
     photos: [row.photo_url_1, row.photo_url_2],
+    buyer: row.buyer ?? null,
     // Carried through for edit_pair; present only if the RPC selects them.
     teamName: row.team_name ?? null,
     status: row.status ?? null,
