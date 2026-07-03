@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { tournament } from '../../data/content'
 import { useAuth } from '../../hooks/useAuth'
 import MarqueeTitle from '../../components/guest/MarqueeTitle/MarqueeTitle'
@@ -58,6 +59,11 @@ export default function AdminPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [working, setWorking] = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
+  // If we were redirected here from a protected route (e.g. /auction),
+  // send the user back there once they sign in.
+  const from = location.state?.from?.pathname ?? '/admin'
 
   if (loading) {
     return <div className="admin-loading">Cargando…</div>
@@ -82,7 +88,11 @@ export default function AdminPage() {
     setError('')
     setWorking(true)
     const { error: authError } = await signInWithPassword(email, password)
-    if (authError) setError(authError.message)
+    if (authError) {
+      setError(authError.message)
+    } else {
+      navigate(from, { replace: true })
+    }
     setWorking(false)
   }
 
