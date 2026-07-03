@@ -12,7 +12,8 @@ const EVENT_ID = 'e610f10c-9aad-401f-b5bc-06bce2df9439';
  * Props:
  *  - data:            the `tournament` object from content.js
  *  - onStartGroup(category, group, pairs):    launch one group's auction
- *  - onStartCategory(category, pairs):         launch the whole category (all groups flattened)
+ *  - onStartCategory(category, pairs, startAt): launch the whole category (all groups flattened),
+ *                                               resuming at the first unresolved pair
  *  - onEdit(category):                         open organizer edit for a category (optional)
  */
 export default function Hub({ data, onStartCategory, onEdit }) {
@@ -25,7 +26,9 @@ export default function Hub({ data, onStartCategory, onEdit }) {
 
   const money = (n) => '$' + (n || 0).toLocaleString('en-US');
 
-  const isGroupDone = (g) => g.pairs.length > 0 && g.pairs.every((p) => p.bid > 0);
+  // a pair is resolved once it has a bid or was explicitly omitted
+  const isResolved = (p) => p.bid > 0 || p.omit;
+  const isGroupDone = (g) => g.pairs.length > 0 && g.pairs.every(isResolved);
   const isCatDone = (cat) => cat.groups.length > 0 && cat.groups.every(isGroupDone);
   const groupMeta = (g) => `${g.pairs.length} parejas`;
 
@@ -35,7 +38,11 @@ export default function Hub({ data, onStartCategory, onEdit }) {
     cat.groups.forEach((g) =>
       g.pairs.forEach((p) => pairs.push({ ...p, group: g.name }))
     );
-    onStartCategory?.(cat.name, pairs);
+    // resume at the first unresolved pair, so re-entering a category mid-auction
+    // (refresh, accidental back-nav, picking up after a break) doesn't replay
+    // and overwrite pairs that were already sold/omitted
+    const startAt = Math.max(0, pairs.findIndex((p) => !isResolved(p)));
+    onStartCategory?.(cat.name, pairs, startAt);
   };
 
   return (
@@ -114,7 +121,16 @@ export default function Hub({ data, onStartCategory, onEdit }) {
               </div>
 
               <div className={styles.actions}>
-                <button className={styles.subastar} onClick={() => startCategory(cat)}>
+                <button
+                  className={styles.subastar}
+                  onClick={() => startCategory(cat)}
+                  disabled={isCatDone(cat)}
+                  title={
+                    isCatDone(cat)
+                      ? 'Esta categoría ya fue subastada: todas las parejas ya tienen puja o fueron omitidas'
+                      : undefined
+                  }
+                >
                   SUBASTAR
                 </button>
                 <button className={styles.editar} onClick={() => onEdit?.(cat)}>

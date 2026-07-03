@@ -22,7 +22,12 @@ export default function AuctionPage() {
   const { data, reload } = useAuctionData(EVENT_ID);
   const { editPair } = useEditPair();
 
-  const goHub = () => setView({ screen: 'hub' });
+  // Returning to the Hub always refetches, since pairs handed to LiveAuction/Edit
+  // are shallow copies — their bid/status mutations never touch `data` directly.
+  const goHub = () => {
+    reload();
+    setView({ screen: 'hub' });
+  };
 
   // Persists a pair via edit_pair (maps the engine pair to the function input).
   const persistPair = (pair) => editPair(toEditPairInput(pair));
@@ -47,8 +52,8 @@ export default function AuctionPage() {
       {view.screen === 'hub' && (
         <Hub
           data={data}
-          onStartCategory={(category, pairs) =>
-            setView({ screen: 'live', category, group: '', pairs })
+          onStartCategory={(category, pairs, startAt) =>
+            setView({ screen: 'live', category, group: '', pairs, startAt })
           }
           onEdit={openEdit}
         />
@@ -57,7 +62,7 @@ export default function AuctionPage() {
       {view.screen === 'edit' && (
         <Edit
           category={editCategory}
-          onBack={() => setView({ screen: 'hub' })}
+          onBack={goHub}
           onSavePair={persistPair}
           onChange={() => {/* persist if/when you have a backend */}}
         />
@@ -68,6 +73,7 @@ export default function AuctionPage() {
           pairs={view.pairs}
           category={view.category}
           group={view.group}
+          startAt={view.startAt}
           thresholds={thresholds}
           intensityFx={true}
           onConfirm={(pair, amount) => {
@@ -76,11 +82,11 @@ export default function AuctionPage() {
             pair.status = 'sold';
             persistPair(pair);
           }}
-          onOmit={(pair) => {
+          onOmit={async (pair) => {
             pair.omit = true;
             pair.bid = 0;
             pair.status = 'skipped';
-            persistPair(pair);
+            await persistPair(pair);
           }}
           onClose={goHub}
           onExit={goHub}
