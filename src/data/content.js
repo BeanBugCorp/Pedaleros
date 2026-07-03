@@ -17,17 +17,15 @@ export const thresholds = { spark: 500, fire: 2500, jackpot: 5000, mega: 10000, 
 
 export const categories = ['Open', 'Femenil A', 'Varonil B']
 
-// Placeholder pairs — pareja/players/photos + bid amounts will be replaced by a Supabase query.
-// Schema (per row): { id, pareja, players, photos, categoria, grupo, amount }
+// Placeholder pairs — pareja/players + bid amounts will be replaced by a Supabase query.
+// Schema (per row): { id, pareja, players, categoria, grupo, amount }
 //   pareja  → short display name shown in leaderboard rows
 //   players → full names shown in the pair detail modal
-//   photos  → [url1, url2] from Supabase Storage; null = show initials placeholder
 export const pairs = [
   {
     id: 1,
     pareja: 'Guzmán / Nava',
     players: ['Ruy Guzmán', 'Jeshua Nava'],
-    photos: [null, null],
     categoria: 'Open',
     grupo: 'Grupo 4',
     amount: 32000,
@@ -36,7 +34,6 @@ export const pairs = [
     id: 2,
     pareja: 'Torres / Ibarra',
     players: ['Marcos Torres', 'Felipe Ibarra'],
-    photos: [null, null],
     categoria: 'Open',
     grupo: 'Grupo 2',
     amount: 28500,
@@ -45,7 +42,6 @@ export const pairs = [
     id: 3,
     pareja: 'Aguilar / Cruz',
     players: ['Diego Aguilar', 'Tomás Cruz'],
-    photos: [null, null],
     categoria: 'Open',
     grupo: 'Grupo 1',
     amount: 17250,
@@ -54,7 +50,6 @@ export const pairs = [
     id: 4,
     pareja: 'Camacho / Solís',
     players: ['Ana Camacho', 'Valeria Solís'],
-    photos: [null, null],
     categoria: 'Femenil A',
     grupo: 'Grupo 1',
     amount: 24000,
@@ -63,7 +58,6 @@ export const pairs = [
     id: 5,
     pareja: 'Domínguez / Razo',
     players: ['Sofía Domínguez', 'Daniela Razo'],
-    photos: [null, null],
     categoria: 'Femenil A',
     grupo: 'Grupo 2',
     amount: 15400,
@@ -72,7 +66,6 @@ export const pairs = [
     id: 6,
     pareja: 'Fernández / Ruiz',
     players: ['Paula Fernández', 'Camila Ruiz'],
-    photos: [null, null],
     categoria: 'Femenil A',
     grupo: 'Grupo 1',
     amount: 12100,
@@ -81,7 +74,6 @@ export const pairs = [
     id: 7,
     pareja: 'Reyes / Mejía',
     players: ['Carlos Reyes', 'Andrés Mejía'],
-    photos: [null, null],
     categoria: 'Varonil B',
     grupo: 'Grupo 3',
     amount: 19800,
@@ -90,7 +82,6 @@ export const pairs = [
     id: 8,
     pareja: 'Pérez / Castillo',
     players: ['Luis Pérez', 'Roberto Castillo'],
-    photos: [null, null],
     categoria: 'Varonil B',
     grupo: 'Grupo 1',
     amount: 14600,
@@ -99,7 +90,6 @@ export const pairs = [
     id: 9,
     pareja: 'Morales / Díaz',
     players: ['Héctor Morales', 'Ernesto Díaz'],
-    photos: [null, null],
     categoria: 'Varonil B',
     grupo: 'Grupo 2',
     amount: 11000,

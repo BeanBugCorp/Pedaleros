@@ -56,9 +56,6 @@ export async function pushImportToDatabase({
         event_id: event.id,
         player1: p.player1,
         player2: p.player2,
-        team_name: p.team_name,
-        photo_url_1: p.photo_1,
-        photo_url_2: p.photo_2,
         group_label: p.group_label,
         sort_order: p.sort_order,
       },
@@ -99,7 +96,6 @@ export async function pushImportToDatabase({
       category_name: f.pair.category_name,
       player1: f.pair.player1,
       player2: f.pair.player2,
-      team_name: f.pair.team_name,
       reason: f.reason,
     })),
   }

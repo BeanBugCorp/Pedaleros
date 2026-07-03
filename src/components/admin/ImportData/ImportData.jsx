@@ -144,7 +144,6 @@ function ImportSummary({ summary }) {
                 <strong>
                   {f.player1 || '—'} / {f.player2 || '—'}
                 </strong>
-                {f.team_name ? ` (${f.team_name})` : ''}
                 {f.category_name ? ` — ${f.category_name}` : ''}
                 <br />
                 <span style={{ color: '#c0392b' }}>{f.reason}</span>

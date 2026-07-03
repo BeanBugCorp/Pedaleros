@@ -6,18 +6,15 @@ import { tournament } from '../data/content';
 const DIVISION_GENDER = { varonil: 'M', femenil: 'F' };
 
 // Flat DB pair (from useSortedPairs) → the engine's pair shape. Extra fields
-// (category, teamName, status) ride along so edit_pair can do a full update.
+// (category, status, buyer) ride along so edit_pair can do a full update.
 function toAuctionPair(p, groupName) {
   return {
     id: p.id,
     a: p.players[0],
     b: p.players[1],
     bid: p.amount || 0,
-    photoA: p.photos[0] || null,
-    photoB: p.photos[1] || null,
     omit: false,
     categoria: p.categoria,
-    teamName: p.teamName ?? null,
     status: p.status ?? null,
     buyer: p.buyer ?? null,
     groupLabel: groupName,
@@ -30,14 +27,10 @@ export function toEditPairInput(pair) {
     id: pair.id,
     player1: pair.a,
     player2: pair.b,
-    teamName: pair.teamName ?? null,
-    photoUrl1: pair.photoA ?? null,
-    photoUrl2: pair.photoB ?? null,
-    groupLabel: pair.groupLabel ?? pair.group ?? null,
+    groupLabel: pair.groupLabel ?? null,
     status: pair.status ?? null,
     saleAmount: pair.bid || 0,
     buyer: pair.buyer ?? null,
-    group: pair.group ?? pair.groupLabel ?? null,
   };
 }
 

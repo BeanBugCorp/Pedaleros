@@ -5,10 +5,8 @@ import Edit from '../../components/auction/Edit/Edit';
 import { thresholds } from '../../data/content';
 import { useAuctionData, useEditPair } from '../../hooks/useAuctionData';
 import { toEditPairInput } from '../../lib/buildTournamentData';
+import { EVENT_ID } from '../../lib/event';
 import './auction.global.css'; // reduced-motion switch, imported once for the whole auction feature
-
-// TODO: source this from routing/props once events are selectable.
-const EVENT_ID = 'e610f10c-9aad-401f-b5bc-06bce2df9439';
 
 /**
  * AuctionPage — wires the Hub (starting page) to the Live Auction.
