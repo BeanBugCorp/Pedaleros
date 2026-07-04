@@ -12,10 +12,8 @@ import PageFooter from '../../components/guest/PageFooter/PageFooter'
 import PairModal from '../../components/guest/PairModal/PairModal'
 import CategoryModal from '../../components/guest/CategoryModal/CategoryModal'
 import SearchOverlay from '../../components/guest/SearchOverlay/SearchOverlay'
+import { EVENT_ID } from '../../lib/event'
 import './GuestPage.css'
-
-// TODO: source this from routing/props once events are selectable.
-const EVENT_ID = 'e610f10c-9aad-401f-b5bc-06bce2df9439'
 
 export default function GuestPage() {
   const [selectedCat, setSelectedCat] = useState(null)

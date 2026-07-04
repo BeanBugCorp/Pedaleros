@@ -53,14 +53,10 @@ export function useEditPair() {
         p_pair_id: pair.id,
         p_player1: pair.player1 ?? null,
         p_player2: pair.player2 ?? null,
-        p_team_name: pair.teamName ?? null,
-        p_photo_url_1: pair.photoUrl1 ?? null,
-        p_photo_url_2: pair.photoUrl2 ?? null,
         p_group_label: pair.groupLabel ?? null,
         p_status: pair.status ?? null,
         p_sale_amount: pair.saleAmount ?? null,
         p_buyer: pair.buyer ?? null,
-        p_group: pair.group ?? null,
       })
       if (rpcError) throw rpcError
       return { error: null }
