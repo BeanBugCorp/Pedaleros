@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { FileImport } from './FileImport'
+import { AddPairForm } from './AddPairForm'
+import { DeletePairPanel } from './DeletePairPanel'
 import './ImportData.css'
 import { parseImportFile } from '../../../lib/importParser'
 import { pushImportToDatabase } from '../../../lib/importToDatabase'
@@ -15,6 +17,7 @@ export function ImportData() {
   const [pushing, setPushing] = useState(false)
   const [summary, setSummary] = useState(null)
   const [eventName, setEventName] = useState('')
+  const [activePanel, setActivePanel] = useState(null) // 'add' | 'delete' | null
 
   const handleFileSelected = (f) => {
     setFile(f)
@@ -51,6 +54,7 @@ export function ImportData() {
     setPushing(true)
     setStatus('Pushing to database…')
     setSummary(null)
+    setActivePanel(null)
     try {
       const ext = file.name.slice(file.name.lastIndexOf('.') + 1).toLowerCase()
       const result = await pushImportToDatabase({
@@ -107,8 +111,34 @@ export function ImportData() {
         >
           Push to database
         </button>
+        <button
+          type="button"
+          className="import-btn"
+          onClick={() =>
+            setActivePanel((prev) => (prev === 'add' ? null : 'add'))
+          }
+          disabled={!summary}
+        >
+          Add pair
+        </button>
+        <button
+          type="button"
+          className="import-btn"
+          onClick={() =>
+            setActivePanel((prev) => (prev === 'delete' ? null : 'delete'))
+          }
+          disabled={!summary}
+        >
+          Delete pair
+        </button>
       </div>
       {status && <p>{status}</p>}
+      {summary && activePanel === 'add' && (
+        <AddPairForm eventId={summary.eventId} />
+      )}
+      {summary && activePanel === 'delete' && (
+        <DeletePairPanel eventId={summary.eventId} />
+      )}
       {summary && <ImportSummary summary={summary} />}
     </div>
   )
