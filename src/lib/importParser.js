@@ -34,11 +34,8 @@ function normalizePair(row) {
     category_name: toStringOrNull(row.category_name),
     player1: toStringOrNull(row.player1),
     player2: toStringOrNull(row.player2),
-    team_name: toStringOrNull(row.team_name),
     group_label: toStringOrNull(row.group_label),
     sort_order: toNumberOrNull(row.sort_order),
-    photo_1: toStringOrNull(row.photo_1),
-    photo_2: toStringOrNull(row.photo_2),
   }
 }
 
@@ -88,11 +85,8 @@ async function parseXml(file) {
     'category_name',
     'player1',
     'player2',
-    'team_name',
     'group_label',
     'sort_order',
-    'photo_1',
-    'photo_2',
   ]
 
   const categories = Array.from(doc.querySelectorAll('categories > category'))
