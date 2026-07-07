@@ -97,7 +97,7 @@ export function useSortedPairs(eventId) {
 }
 
 // Loads the categories for an event via the get_categories Postgres function.
-// Returns an array of { name, gender, sort_order } objects, ordered by
+// Returns an array of { id, name, gender, sort_order } objects, ordered by
 // sort_order ascending (nulls last).
 export function useCategories(eventId) {
   const [categories, setCategories] = useState([])
@@ -120,6 +120,7 @@ export function useCategories(eventId) {
       setCategories(
         (data ?? [])
           .map((row) => ({
+            id: row.id,
             name: row.name,
             gender: row.gender,
             sort_order: row.sort_order,

@@ -1,49 +1,36 @@
-import { useEffect, useState } from 'react'
-import { deletePairById, searchPairsByName } from '../../../lib/pairAdmin'
+import { useState } from 'react'
+import { useSortedPairs } from '../../../hooks/useGuestData'
+import { useDeletePair } from '../../../hooks/useAdminData'
 import './DeletePairPanel.css'
 
 // Search bar + single-selection list to find and delete one pair. The
 // delete button requires a double click so a stray click can't remove data.
 export function DeletePairPanel({ eventId, onDeleted }) {
+  const { sortedPairs, reloadSortedPairs } = useSortedPairs(eventId)
+  const { deletePair, loading: deleting } = useDeletePair()
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState([])
   const [selectedId, setSelectedId] = useState('')
-  const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    if (!eventId || !query.trim()) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- clear stale results
-      setResults([])
-      return
-    }
-    let cancelled = false
-    searchPairsByName(eventId, query.trim())
-      .then((rows) => {
-        if (!cancelled) setResults(rows)
-      })
-      .catch((err) => {
-        if (!cancelled) setError(err.message)
-      })
-    return () => {
-      cancelled = true
-    }
-  }, [eventId, query])
+  // All event pairs are loaded once; filtering happens in memory.
+  const q = query.trim().toLowerCase()
+  const results = q
+    ? sortedPairs.filter((p) =>
+        p.players.some((name) => name.toLowerCase().includes(q)),
+      )
+    : []
 
   const handleConfirmedDelete = async () => {
     if (!selectedId || deleting) return
-    setDeleting(true)
     setError('')
-    try {
-      await deletePairById(selectedId)
-      setResults((prev) => prev.filter((p) => p.id !== selectedId))
-      setSelectedId('')
-      onDeleted?.(selectedId)
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setDeleting(false)
+    const { error: deleteError } = await deletePair(selectedId)
+    if (deleteError) {
+      setError(deleteError.message)
+      return
     }
+    setSelectedId('')
+    reloadSortedPairs()
+    onDeleted?.(selectedId)
   }
 
   return (
@@ -71,8 +58,8 @@ export function DeletePairPanel({ eventId, onDeleted }) {
                   onChange={() => setSelectedId(p.id)}
                 />
                 <span>
-                  {p.player1} / {p.player2}
-                  {p.categoryName ? ` — ${p.categoryName}` : ''}
+                  {p.players[0]} / {p.players[1]}
+                  {p.categoria ? ` — ${p.categoria}` : ''}
                 </span>
               </label>
             </li>

@@ -1,62 +1,34 @@
 import { useEffect, useState } from 'react'
+import { useCategories } from '../../../hooks/useGuestData'
 import {
-  addPair,
-  fetchCategoriesForEvent,
-  fetchGroupLabelsForCategory,
-} from '../../../lib/pairAdmin'
+  useGroupLabelsForCategory,
+  useAddPair,
+} from '../../../hooks/useAdminData'
 import './AddPairForm.css'
 
 const FALLBACK_GROUP = 'Único'
 
 // Row of 5 fields + a "+" button to add a single pair to an existing event.
 export function AddPairForm({ eventId, onAdded }) {
-  const [categories, setCategories] = useState([])
+  const { categories, error: categoriesError } = useCategories(eventId)
   const [gender, setGender] = useState('')
   const [categoryId, setCategoryId] = useState('')
   const [player1, setPlayer1] = useState('')
   const [player2, setPlayer2] = useState('')
-  const [groupOptions, setGroupOptions] = useState([FALLBACK_GROUP])
   const [groupLabel, setGroupLabel] = useState(FALLBACK_GROUP)
-  const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    if (!eventId) return
-    let cancelled = false
-    fetchCategoriesForEvent(eventId)
-      .then((rows) => {
-        if (!cancelled) setCategories(rows)
-      })
-      .catch((err) => {
-        if (!cancelled) setError(err.message)
-      })
-    return () => {
-      cancelled = true
-    }
-  }, [eventId])
+  const { addPair, loading: saving } = useAddPair()
+  const { groupLabels, error: groupLabelsError } =
+    useGroupLabelsForCategory(categoryId)
+  const groupOptions = groupLabels.length ? groupLabels : [FALLBACK_GROUP]
 
+  // Keep the selected group valid as the options change (category switch).
   useEffect(() => {
-    if (!categoryId) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- reset when category cleared
-      setGroupOptions([FALLBACK_GROUP])
-      setGroupLabel(FALLBACK_GROUP)
-      return
-    }
-    let cancelled = false
-    fetchGroupLabelsForCategory(categoryId)
-      .then((labels) => {
-        if (cancelled) return
-        const options = labels.length ? labels : [FALLBACK_GROUP]
-        setGroupOptions(options)
-        setGroupLabel(options[0])
-      })
-      .catch((err) => {
-        if (!cancelled) setError(err.message)
-      })
-    return () => {
-      cancelled = true
-    }
-  }, [categoryId])
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync selection to options
+    setGroupLabel(groupOptions[0])
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- groupOptions is derived from groupLabels
+  }, [categoryId, groupLabels])
 
   const genders = [...new Set(categories.map((c) => c.gender).filter(Boolean))]
   const filteredCategories = gender
@@ -75,22 +47,19 @@ export function AddPairForm({ eventId, onAdded }) {
       setError('Completa categoría, jugador 1 y jugador 2.')
       return
     }
-    setSaving(true)
-    try {
-      const pair = await addPair({
-        eventId,
-        categoryId,
-        player1: player1.trim(),
-        player2: player2.trim(),
-        groupLabel,
-      })
+    const { data, error: addError } = await addPair({
+      eventId,
+      categoryId,
+      player1: player1.trim(),
+      player2: player2.trim(),
+      groupLabel,
+    })
+    if (addError) {
+      setError(addError.message)
+    } else {
       setPlayer1('')
       setPlayer2('')
-      onAdded?.(pair)
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setSaving(false)
+      onAdded?.(data)
     }
   }
 
@@ -157,7 +126,11 @@ export function AddPairForm({ eventId, onAdded }) {
         </button>
       </div>
 
-      {error && <p className="add-pair-error">{error}</p>}
+      {(error || categoriesError || groupLabelsError) && (
+        <p className="add-pair-error">
+          {error || (categoriesError ?? groupLabelsError).message}
+        </p>
+      )}
     </form>
   )
 }
