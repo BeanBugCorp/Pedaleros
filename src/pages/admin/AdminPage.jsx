@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { tournament } from '../../data/content'
 import { useAuth } from '../../hooks/useAuth'
+import { RequireAuth } from '../../components/RequireAuth'
 import MarqueeTitle from '../../components/guest/MarqueeTitle/MarqueeTitle'
 import { ImportData } from '../../components/admin/ImportData/ImportData'
 import './AdminPage.css'
@@ -53,86 +55,92 @@ function AdminFooter() {
 }
 
 export default function AdminPage() {
-  const { user, loading, signInWithPassword, signOut } = useAuth()
+  const { user, signInWithPassword, signOut } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [working, setWorking] = useState(false)
-
-  if (loading) {
-    return <div className="admin-loading">Cargando…</div>
-  }
-
-  if (user) {
-    return (
-      <div className="admin-dashboard">
-        <div className="admin-dashboard-header">
-          <span className="admin-user-email">{user.email}</span>
-          <button className="admin-signout-btn" type="button" onClick={signOut}>
-            Cerrar sesión
-          </button>
-        </div>
-        <ImportData />
-      </div>
-    )
-  }
+  const location = useLocation()
+  const navigate = useNavigate()
+  // If we were redirected here from a protected route (e.g. /auction),
+  // send the user back there once they sign in.
+  const from = location.state?.from?.pathname ?? '/admin'
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     setWorking(true)
     const { error: authError } = await signInWithPassword(email, password)
-    if (authError) setError(authError.message)
+    if (authError) {
+      setError(authError.message)
+    } else {
+      navigate(from, { replace: true })
+    }
     setWorking(false)
   }
 
   return (
-    <div className="admin-layout">
-      <div className="admin-page">
-        <header className="admin-header">
-          <div className="admin-header-marquee">
-            <MarqueeTitle text="Torneo 2do|Aniversario" variant="duo" />
-          </div>
-          <div className="admin-header-meta">
-            <span>{tournament.club}</span>
-            <span className="admin-dates">{tournament.dates}</span>
-          </div>
-        </header>
+    <RequireAuth
+      loadingFallback={<div className="admin-loading">Cargando…</div>}
+      fallback={
+        <div className="admin-layout">
+          <div className="admin-page">
+            <header className="admin-header">
+              <div className="admin-header-marquee">
+                <MarqueeTitle text="Torneo 2do|Aniversario" variant="duo" />
+              </div>
+              <div className="admin-header-meta">
+                <span>{tournament.club}</span>
+                <span className="admin-dates">{tournament.dates}</span>
+              </div>
+            </header>
 
-        <main className="admin-main">
-          <form className="admin-login-card" onSubmit={handleSubmit}>
-            <h1 className="admin-login-title">Acceso Administrador</h1>
-            <input
-              className="admin-input"
-              type="email"
-              placeholder="Correo electrónico"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoComplete="email"
-            />
-            <input
-              className="admin-input"
-              type="password"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              autoComplete="current-password"
-            />
-            {error && <p className="admin-error">{error}</p>}
-            <button
-              className="admin-submit-btn"
-              type="submit"
-              disabled={working}
-            >
-              {working ? 'Entrando…' : 'Entrar'}
-            </button>
-          </form>
-        </main>
+            <main className="admin-main">
+              <form className="admin-login-card" onSubmit={handleSubmit}>
+                <h1 className="admin-login-title">Acceso Administrador</h1>
+                <input
+                  className="admin-input"
+                  type="email"
+                  placeholder="Correo electrónico"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                />
+                <input
+                  className="admin-input"
+                  type="password"
+                  placeholder="Contraseña"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                />
+                {error && <p className="admin-error">{error}</p>}
+                <button
+                  className="admin-submit-btn"
+                  type="submit"
+                  disabled={working}
+                >
+                  {working ? 'Entrando…' : 'Entrar'}
+                </button>
+              </form>
+            </main>
+          </div>
+
+          <AdminFooter />
+        </div>
+      }
+    >
+      <div className="admin-dashboard">
+        <div className="admin-dashboard-header">
+          <span className="admin-user-email">{user?.email}</span>
+          <button className="admin-signout-btn" type="button" onClick={signOut}>
+            Cerrar sesión
+          </button>
+        </div>
+        <ImportData />
       </div>
-
-      <AdminFooter />
-    </div>
+    </RequireAuth>
   )
 }
