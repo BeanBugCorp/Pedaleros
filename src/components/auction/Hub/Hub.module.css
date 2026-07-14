@@ -103,7 +103,14 @@
 }
 
 /* group buttons */
-.groups { display: flex; flex-direction: column; gap: 8px; padding: 0 8px; }
+.groups {
+  display: flex; flex-direction: column; gap: 8px; padding: 0 8px;
+  max-height: 165px; overflow-y: auto; overflow-x: hidden;
+  scrollbar-width: thin; scrollbar-color: #c89a44 rgba(20, 10, 14, .4);
+}
+.groups::-webkit-scrollbar { width: 6px; }
+.groups::-webkit-scrollbar-track { background: rgba(20, 10, 14, .4); border-radius: 6px; }
+.groups::-webkit-scrollbar-thumb { background: #c89a44; border-radius: 6px; }
 .groupBtn {
   display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-radius: 9px;
   background: linear-gradient(180deg, #f6ecd5, #e1d3b6); border: 1.5px solid #caa64a;
